@@ -1,0 +1,27 @@
+{
+  "name": "dmn-migration-utility",
+  "version": "1.0.0",
+  "description": "dmn-migration-utility",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --reporter=spec --recursive test/spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/philippfromme/dmn-migration-utility.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/philippfromme/dmn-migration-utility/issues"
+  },
+  "homepage": "https://github.com/philippfromme/dmn-migration-utility#readme",
+  "dependencies": {
+    "dmn-moddle": "^7.0.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^7.0.0"
+  }
+}
