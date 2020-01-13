@@ -1,16 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/1.0" id="Definitions_1c3a0yk" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="3.5.0">
+<definitions xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/1.0" id="Definitions_1" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="3.5.0">
   <decision id="Decision_1">
     <extensionElements>
       <biodi:bounds x="156" y="100" width="180" height="80" />
       <biodi:edge source="InputData_1">
-        <biodi:waypoints x="247" y="300" />
-        <biodi:waypoints x="246" y="180" />
+        <biodi:waypoints x="222" y="300" />
+        <biodi:waypoints x="240" y="180" />
+      </biodi:edge>
+      <biodi:edge source="KnowledgeSource_1">
+        <biodi:waypoints x="379" y="300" />
+        <biodi:waypoints x="279" y="180" />
+      </biodi:edge>
+      <biodi:edge source="BusinessKnowledgeModel_1">
+        <biodi:waypoints x="576" y="300" />
+        <biodi:waypoints x="329" y="180" />
       </biodi:edge>
     </extensionElements>
     <informationRequirement>
       <requiredInput href="#InputData_1" />
     </informationRequirement>
+    <knowledgeRequirement>
+      <requiredKnowledge href="#BusinessKnowledgeModel_1" />
+    </knowledgeRequirement>
+    <authorityRequirement>
+      <requiredAuthority href="#KnowledgeSource_1" />
+    </authorityRequirement>
     <decisionTable id="decisionTable_1">
       <input id="input_1">
         <inputExpression id="inputExpression_1" typeRef="string">
@@ -22,7 +36,29 @@
   </decision>
   <inputData id="InputData_1">
     <extensionElements>
-      <biodi:bounds x="184" y="300" width="125" height="45" />
+      <biodi:bounds x="156" y="300" width="125" height="45" />
+    </extensionElements>
+  </inputData>
+  <knowledgeSource id="KnowledgeSource_1">
+    <extensionElements>
+      <biodi:bounds x="356" y="300" width="100" height="63" />
+      <biodi:edge source="InputData_2">
+        <biodi:waypoints x="417" y="500" />
+        <biodi:waypoints x="408" y="363" />
+      </biodi:edge>
+    </extensionElements>
+    <authorityRequirement>
+      <requiredInput href="#InputData_2" />
+    </authorityRequirement>
+  </knowledgeSource>
+  <businessKnowledgeModel id="BusinessKnowledgeModel_1">
+    <extensionElements>
+      <biodi:bounds x="556" y="300" width="135" height="46" />
+    </extensionElements>
+  </businessKnowledgeModel>
+  <inputData id="InputData_2">
+    <extensionElements>
+      <biodi:bounds x="356" y="500" width="125" height="45" />
     </extensionElements>
   </inputData>
 </definitions>

@@ -2,19 +2,40 @@ const { expect } = require('chai');
 
 const fs = require('fs');
 
+const { validateXML } = require('xsd-schema-validator');
+
 const migrateDiagram = require('../../src/migrateDiagram');
+
+const xsd = 'resources/dmn/xsd/DMN13.xsd';
+
+async function validate(xml) {
+  return new Promise((resolve, reject) => {
+    validateXML(xml, xsd, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+
+      resolve(result);
+    });
+  });
+}
 
 describe('migrateDiagram', function() {
 
+  this.timeout(10000);
+
   it('should migrate diagram', async function() {
 
-    const xml = fs.readFileSync('test/spec/diagram.dmn', 'utf8');
+    // given
+    let xml = fs.readFileSync('test/spec/diagram.dmn', 'utf8');
 
-    const migratedXml = await migrateDiagram(xml);
+    // when
+    xml = await migrateDiagram(xml);
 
-    console.log(migratedXml);
+    const result = await validate(xml);
 
-    expect(migratedXml).to.exist;
+    // then
+    expect(result.valid).to.be.true;
   });
 
 });
