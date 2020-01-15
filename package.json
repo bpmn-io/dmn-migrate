@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "dmn-migration-utility",
   "main": "src/migrateDiagram.js",
+  "bin": "bin/migrate",
   "scripts": {
     "lint": "eslint .",
     "test": "mocha --reporter=spec --recursive test/spec"
@@ -24,7 +25,8 @@
   "dependencies": {
     "dmn-moddle": "^7.0.0",
     "ids": "^1.0.0",
-    "min-dash": "^3.5.2"
+    "min-dash": "^3.5.2",
+    "mri": "^1.1.4"
   },
   "devDependencies": {
     "chai": "^4.2.0",
