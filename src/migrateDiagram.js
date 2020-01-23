@@ -115,6 +115,10 @@ function isAny(element, types) {
  * @returns {Object}
  */
 function getDMNElementRef(drgElement, source) {
+  if (is(drgElement, 'dmn:Association')) {
+    return drgElement;
+  }
+
   return Object.values(drgElement).reduce((dmnElementRef, dmnElements) => {
     if (isArray(dmnElements)) {
       return dmnElementRef || dmnElements.find(dmnElement => {
@@ -139,10 +143,15 @@ function migrateDI(definitions, moddle) {
 
   const diagramElements = definitions.get('dmnDI').get('diagrams')[ 0 ].get('diagramElements');
 
-  const drgElements = definitions.get('drgElement');
+  const semanticElements = [].concat(
+    definitions.get('drgElement'),
+    definitions.get('artifact'),
+    definitions.get('textAnnotation'),
+    definitions.get('association')
+  );
 
-  drgElements.forEach(drgElement => {
-    const extensionElements = drgElement.get('extensionElements');
+  semanticElements.forEach(semantic => {
+    const extensionElements = semantic.get('extensionElements');
 
     if (!extensionElements) {
       return;
@@ -159,12 +168,12 @@ function migrateDI(definitions, moddle) {
 
         const shape = moddle.create('dmndi:DMNShape', {
           bounds,
-          dmnElementRef: drgElement
+          dmnElementRef: semantic
         });
 
         bounds.$parent = shape;
 
-        drgElement.$parent = shape;
+        semantic.$parent = shape;
 
         addId(shape);
 
@@ -181,7 +190,7 @@ function migrateDI(definitions, moddle) {
           });
         });
 
-        const dmnElementRef = getDMNElementRef(drgElement, extensionElement.get('source'));
+        const dmnElementRef = getDMNElementRef(semantic, extensionElement.get('source'));
 
         const edge = moddle.create('dmndi:DMNEdge', {
           dmnElementRef,
@@ -205,7 +214,7 @@ function migrateDI(definitions, moddle) {
     }));
 
     if (!extensionElements.get('values').length) {
-      drgElement.set('extensionElements', undefined);
+      semantic.set('extensionElements', undefined);
     }
   });
 
