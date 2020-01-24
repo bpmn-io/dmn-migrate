@@ -102,4 +102,19 @@ describe('migrateDiagram', function() {
     // then
     expect(result.valid).to.be.true;
   });
+
+
+  it('should not create DMNDI in case if no DI information is included', async function() {
+
+    // given
+    let xml = fs.readFileSync('test/spec/prefixed-namespace.dmn', 'utf8');
+
+    // when
+    xml = await migrateDiagram(xml);
+
+    const definitions = await parse(xml);
+
+    // then
+    expect(definitions.dmnDI).to.not.exist;
+  });
 });

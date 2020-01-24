@@ -166,9 +166,8 @@ function getDMNElementRef(drgElement, source) {
 }
 
 function migrateDI(definitions, moddle) {
-  definitions.set('dmnDI', createDMNDI(moddle));
 
-  const diagramElements = definitions.get('dmnDI').get('diagrams')[ 0 ].get('diagramElements');
+  const diagramElements = [];
 
   const semanticElements = [].concat(
     definitions.get('drgElement'),
@@ -197,8 +196,6 @@ function migrateDI(definitions, moddle) {
         });
 
         bounds.$parent = shape;
-
-        semantic.$parent = shape;
 
         addId(shape);
 
@@ -242,6 +239,20 @@ function migrateDI(definitions, moddle) {
       semantic.set('extensionElements', undefined);
     }
   });
+
+  if (diagramElements.length) {
+    const dmnDI = createDMNDI(moddle);
+
+    definitions.set('dmnDI', dmnDI);
+
+    dmnDI.$parent = definitions;
+
+    const diagrams = dmnDI.get('diagrams')[ 0 ];
+
+    diagrams.set('diagramElements', diagramElements);
+
+    diagramElements.forEach(diagramElement => diagramElement.$parent = diagrams);
+  }
 
   return definitions;
 }
