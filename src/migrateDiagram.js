@@ -225,7 +225,7 @@ async function migrateDiagram(xml) {
 
     moddle.fromXML(xml, 'dmn:Definitions', (err, definitions) => {
       if (err) {
-        reject(err);
+        return reject(err);
       }
 
       addIds(definitions);

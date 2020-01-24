@@ -55,6 +55,25 @@ describe('migrateDiagram', function() {
   });
 
 
+  it('should fail when diagram cannot be parsed', async function() {
+
+    // given
+    const xml = '<?xml version="1.0" encoding="UTF-8"?>';
+    let error;
+
+    // when
+    try {
+      await migrateDiagram(xml);
+    } catch (e) {
+      error = e;
+    }
+
+    // then
+    expect(error).to.exist;
+    expect(error.message).to.eql('failed to parse document as <dmn:Definitions>');
+  });
+
+
   it('should create DMNDI for Text Annotation and Association', async function() {
 
     // given
