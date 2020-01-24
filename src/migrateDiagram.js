@@ -18,6 +18,33 @@ const moddle = new DmnModdle({
 const DMN11URI = 'xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd"',
       DMN13URI = 'xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"';
 
+
+module.exports = async function migrateDiagram(xml) {
+  return new Promise((resolve, reject) => {
+    xml = xml.replace(DMN11URI, DMN13URI);
+
+    moddle.fromXML(xml, 'dmn:Definitions', (err, definitions) => {
+      if (err) {
+        return reject(err);
+      }
+
+      addIds(definitions);
+
+      addNames(definitions);
+
+      migrateDI(definitions, moddle);
+
+      moddle.toXML(definitions, { format: true }, (err, xml) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(xml);
+        }
+      });
+    });
+  });
+};
+
 /**
  * Add ID to element if required.
  *
@@ -220,31 +247,3 @@ function migrateDI(definitions, moddle) {
 
   return definitions;
 }
-
-async function migrateDiagram(xml) {
-  return new Promise((resolve, reject) => {
-    xml = xml.replace(DMN11URI, DMN13URI);
-
-    moddle.fromXML(xml, 'dmn:Definitions', (err, definitions) => {
-      if (err) {
-        return reject(err);
-      }
-
-      addIds(definitions);
-
-      addNames(definitions);
-
-      migrateDI(definitions, moddle);
-
-      moddle.toXML(definitions, { format: true }, (err, xml) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(xml);
-        }
-      });
-    });
-  });
-}
-
-module.exports = migrateDiagram;
