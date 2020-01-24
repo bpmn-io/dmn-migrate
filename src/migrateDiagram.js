@@ -15,8 +15,8 @@ const moddle = new DmnModdle({
   biodi: BiodiPackage
 });
 
-const DMN11URI = 'xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd"',
-      DMN13URI = 'xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"';
+const DMN11URI = '"http://www.omg.org/spec/DMN/20151101/dmn.xsd"',
+      DMN13URI = '"https://www.omg.org/spec/DMN/20191111/MODEL/"';
 
 
 module.exports = async function migrateDiagram(xml) {
