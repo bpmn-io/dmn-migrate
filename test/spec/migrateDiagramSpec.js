@@ -88,4 +88,18 @@ describe('migrateDiagram', function() {
     expect(definitions.dmnDI.diagrams[0].diagramElements).to.have.lengthOf(3);
   });
 
+
+  it('should migrate diagram with prefixed dmn namespace', async function() {
+
+    // given
+    let xml = fs.readFileSync('test/spec/prefixed-namespace.dmn', 'utf8');
+
+    // when
+    xml = await migrateDiagram(xml);
+
+    const result = await validate(xml);
+
+    // then
+    expect(result.valid).to.be.true;
+  });
 });
