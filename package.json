@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/philippfromme/dmn-migration-utility#readme",
   "dependencies": {
-    "dmn-moddle": "^7.0.0",
+    "dmn-moddle": "^8.0.0",
     "ids": "^1.0.0",
     "min-dash": "^3.5.2",
     "mri": "^1.1.4"
