@@ -43,7 +43,7 @@ describe('migrateDiagram', function() {
   it('should migrate diagram', async function() {
 
     // given
-    let xml = fs.readFileSync('test/spec/diagram.dmn', 'utf8');
+    let xml = fs.readFileSync('test/fixtures/diagram.dmn', 'utf8');
 
     // when
     xml = await migrateDiagram(xml);
@@ -77,7 +77,7 @@ describe('migrateDiagram', function() {
   it('should create DMNDI for Text Annotation and Association', async function() {
 
     // given
-    let xml = fs.readFileSync('test/spec/text-annotation.dmn', 'utf8');
+    let xml = fs.readFileSync('test/fixtures/text-annotation.dmn', 'utf8');
 
     // when
     xml = await migrateDiagram(xml);
@@ -92,7 +92,7 @@ describe('migrateDiagram', function() {
   it('should migrate diagram with prefixed dmn namespace', async function() {
 
     // given
-    let xml = fs.readFileSync('test/spec/prefixed-namespace.dmn', 'utf8');
+    let xml = fs.readFileSync('test/fixtures/prefixed-namespace.dmn', 'utf8');
 
     // when
     xml = await migrateDiagram(xml);
@@ -107,7 +107,7 @@ describe('migrateDiagram', function() {
   it('should not create DMNDI in case if no DI information is included', async function() {
 
     // given
-    let xml = fs.readFileSync('test/spec/prefixed-namespace.dmn', 'utf8');
+    let xml = fs.readFileSync('test/fixtures/prefixed-namespace.dmn', 'utf8');
 
     // when
     xml = await migrateDiagram(xml);
