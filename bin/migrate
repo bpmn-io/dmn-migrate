@@ -11,7 +11,8 @@ const {
 });
 
 if (!input || !output) {
-  throw new Error('Missing --input or --output');
+  console.error('Error: Missing --input or --output');
+  process.exit(1);
 }
 
 const fs = require('fs');
