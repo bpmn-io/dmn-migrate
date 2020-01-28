@@ -1,6 +1,6 @@
 # dmn-migration-utility
 
-[![Build Status](https://travis-ci.org/bpmn-io/dmn-migration-utility.svg?branch=master)](https://travis-ci.org/bpmn-io/dmn-migration-utility)
+[![Build Status](https://travis-ci.com/bpmn-io/dmn-migration-utility.svg?branch=master)](https://travis-ci.com/bpmn-io/dmn-migration-utility)
 
 A migration tool that converts DMN 1.1 diagrams to DMN 1.3.
 
