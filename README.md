@@ -9,9 +9,9 @@ A migration tool that converts DMN 1.1 diagrams to DMN 1.3.
 Utility can be used either as a package:
 
 ```javascript
-const migrateDiagram = require('dmn-migration-utility');
+const { migrateTo13 } = require('dmn-migration-utility');
 
-migrateDiagram(dmn11XML)
+migrateTo13(dmn11XML)
   .then(dmn13XML => {
     /* ... */
   });
