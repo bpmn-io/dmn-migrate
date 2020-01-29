@@ -6,7 +6,7 @@ const fs = require('fs');
 
 const { validateXML } = require('xsd-schema-validator');
 
-const migrateDiagram = require('../../src/migrateDiagram');
+const { migrateTo13: migrateDiagram } = require('../../src/migrateDiagram');
 
 const xsd = 'resources/dmn/xsd/DMN13.xsd';
 
@@ -70,7 +70,7 @@ describe('migrateDiagram', function() {
 
     // then
     expect(error).to.exist;
-    expect(error.message).to.eql('failed to parse document as <dmn:Definitions>');
+    expect(error.message).to.eql('unknown document namespace');
   });
 
 

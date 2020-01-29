@@ -19,7 +19,34 @@ const DMN11URI = '"http://www.omg.org/spec/DMN/20151101/dmn.xsd"',
       DMN13URI = '"https://www.omg.org/spec/DMN/20191111/MODEL/"';
 
 
-module.exports = async function migrateDiagram(xml) {
+/**
+ * Migrate XML to DMN 1.3.
+ *
+ * @param {string} xml
+ * @returns {string}
+ */
+module.exports.migrateTo13 = function migrateTo13(xml) {
+
+  if (hasNamespace(DMN11URI, xml)) {
+    return migrateFrom11To13(xml);
+  } else if (hasNamespace(DMN13URI, xml)) {
+    return xml;
+  }
+
+  throw new Error('unknown document namespace');
+};
+
+/**
+ * Check if provided xml contains namespace.
+ *
+ * @param {string} namespace
+ * @param {string} xml
+ */
+function hasNamespace(namespace, xml) {
+  return xml.includes(namespace);
+}
+
+function migrateFrom11To13(xml) {
   return new Promise((resolve, reject) => {
     xml = xml.replace(DMN11URI, DMN13URI);
 
@@ -43,7 +70,7 @@ module.exports = async function migrateDiagram(xml) {
       });
     });
   });
-};
+}
 
 /**
  * Add ID to element if required.
