@@ -20,9 +20,10 @@ const DMN11URI = '"http://www.omg.org/spec/DMN/20151101/dmn.xsd"',
 
 
 /**
- * Migrate XML to DMN 1.3.
+ * Migrate DMN 1.1 XML to 1.3.
  *
  * @param {string} xml
+ *
  * @returns {string}
  */
 module.exports.migrateTo13 = function migrateTo13(xml) {
@@ -33,19 +34,28 @@ module.exports.migrateTo13 = function migrateTo13(xml) {
     return xml;
   }
 
-  throw new Error('unknown document namespace');
+  throw new Error('unknown namespace');
 };
 
 /**
- * Check if provided xml contains namespace.
+ * Check if XML has namespace.
  *
  * @param {string} namespace
  * @param {string} xml
+ *
+ * @returns {boolean}
  */
 function hasNamespace(namespace, xml) {
   return xml.includes(namespace);
 }
 
+/**
+ * Migrate DMN 1.1 XML to 1.3.
+ *
+ * @param {string} xml
+ *
+ * @returns {string}
+ */
 function migrateFrom11To13(xml) {
   return new Promise((resolve, reject) => {
     xml = xml.replace(DMN11URI, DMN13URI);
@@ -136,6 +146,13 @@ function addNames(element) {
   });
 }
 
+/**
+ * Create and return `dmndi:DMNDI`.
+ *
+ * @param {Object} moddle
+ *
+ * @returns {Object}
+ */
 function createDMNDI(moddle) {
   const dmnDiagram = moddle.create('dmndi:DMNDiagram', {
     diagramElements: []
@@ -152,10 +169,26 @@ function createDMNDI(moddle) {
   return dmnDI;
 }
 
+/**
+ * Check if element is type.
+ *
+ * @param {Object} element
+ * @param {string} type
+ *
+ * @returns {boolean}
+ */
 function is(element, type) {
   return isFunction(element.$instanceOf) && element.$instanceOf(type);
 }
 
+/**
+ * Check if element is any type.
+ *
+ * @param {Object} element
+ * @param {Array<string>} types
+ *
+ * @returns {boolean}
+ */
 function isAny(element, types) {
   return some(types, type => is(element, type));
 }
@@ -192,8 +225,15 @@ function getDMNElementRef(drgElement, source) {
   }, null);
 }
 
+/**
+ * Migrate custom DI to DMN 1.3 DI.
+ *
+ * @param {Object} definitions
+ * @param {Object} moddle
+ *
+ * @returns {Object}
+ */
 function migrateDI(definitions, moddle) {
-
   const diagramElements = [];
 
   const semanticElements = [].concat(
