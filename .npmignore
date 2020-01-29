@@ -1,0 +1,5 @@
+test/
+resources/dmn/xsd/
+.eslintignore
+.eslintrc
+.travis.yml
