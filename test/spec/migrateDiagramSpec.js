@@ -70,7 +70,7 @@ describe('migrateDiagram', function() {
 
     // then
     expect(error).to.exist;
-    expect(error.message).to.eql('unknown document namespace');
+    expect(error.message).to.eql('unknown namespace');
   });
 
 
