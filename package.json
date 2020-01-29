@@ -1,7 +1,7 @@
 {
-  "name": "dmn-migration-utility",
-  "version": "0.0.0",
-  "description": "dmn-migration-utility",
+  "name": "@bpmn-io/dmn-migrate",
+  "version": "0.1.0",
+  "description": "Migrate DMN diagrams from one version of the standard to another.",
   "main": "src/migrateDiagram.js",
   "bin": "bin/migrate",
   "scripts": {
@@ -12,18 +12,24 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/philippfromme/dmn-migration-utility.git"
+    "url": "git+https://github.com/bpmn-io/dmn-migrate.git"
   },
   "keywords": [
     "dmn",
     "migration"
   ],
   "author": "Philipp Fromme",
+  "contributors": [
+    {
+      "name": "bpmn.io contributors",
+      "url": "https://github.com/bpmn-io"
+    }
+  ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/philippfromme/dmn-migration-utility/issues"
+    "url": "https://github.com/bpmn-io/dmn-migrate/issues"
   },
-  "homepage": "https://github.com/philippfromme/dmn-migration-utility#readme",
+  "homepage": "https://github.com/bpmn-io/dmn-migrate#readme",
   "dependencies": {
     "dmn-moddle": "^8.0.0",
     "ids": "^1.0.0",
