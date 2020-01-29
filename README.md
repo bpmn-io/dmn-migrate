@@ -1,30 +1,34 @@
-# dmn-migration-utility
+# dmn-migrate
 
-[![Build Status](https://travis-ci.com/bpmn-io/dmn-migration-utility.svg?branch=master)](https://travis-ci.com/bpmn-io/dmn-migration-utility)
+[![Build Status](https://travis-ci.org/bpmn-io/dmn-migrate.svg?branch=master)](https://travis-ci.org/bpmn-io/dmn-migrate)
 
-A migration tool that converts DMN 1.1 diagrams to DMN 1.3.
+Migrate DMN diagrams from one version of the standard to another (e.g. DMN 1.1 to 1.3).
+
+Currently supported migration paths:
+
+* DMN 1.1 to DMN 1.3
 
 ## Usage
 
-Utility can be used either as a package:
+### Through command line interface
+
+```bash
+dmn-migrate -i ./dmn11.dmn -o ./dmn13.dmn
+
+# or
+
+dmn-migrate --input ./dmn11.dmn --output ./dmn13.dmn
+```
+
+### Through JavaScript API
 
 ```javascript
 const { migrateTo13 } = require('dmn-migration-utility');
 
 migrateTo13(dmn11XML)
   .then(dmn13XML => {
-    /* ... */
+    // ...
   });
-```
-
-or as a command line tool:
-
-```bash
-dmn-migration-utility -i ./dmn11.dmn -o ./dmn13.dmn
-
-# or
-
-dmn-migration-utility --input ./dmn11.dmn --output ./dmn13.dmn
 ```
 
 ## License
