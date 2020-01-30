@@ -19,7 +19,7 @@ const fs = require('fs');
 
 const diagramXML = fs.readFileSync(input, 'utf8');
 
-const { migrateTo13: migrateDiagram } = require('../src/migrateDiagram');
+const { migrateTo13: migrateDiagram } = require('../dist');
 
 migrateDiagram(diagramXML)
   .then(outputXML => {

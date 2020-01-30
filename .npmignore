@@ -1,5 +1,7 @@
 test/
 resources/dmn/xsd/
+src/
 .eslintignore
 .eslintrc
 .travis.yml
+rollup.config.js
