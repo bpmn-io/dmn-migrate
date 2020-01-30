@@ -2,13 +2,19 @@ const { expect } = require('chai');
 
 const { sync: exec } = require('execa');
 
+const { sync: del } = require('del');
+
+const path = require('path');
+
+const fs = require('fs');
+
 const binPath = require('../../package.json').bin;
 
 describe('cli', function() {
 
   this.timeout(10000);
 
-  it('should migrate diagram', async function() {
+  it('should migrate diagram', function() {
 
     // when
     const result = exec(binPath, [
@@ -45,4 +51,36 @@ describe('cli', function() {
   });
 
 
+  describe('DMN 1.3 diagram', function() {
+
+    const INPUT_PATH = path.join(__dirname, '../fixtures/diagram-1-3.dmn');
+    const OUTPUT_PATH = path.join(__dirname, 'tmp.dmn');
+
+    afterEach(function() {
+      del(OUTPUT_PATH);
+    });
+
+
+    it('should leave DMN 1.3 diagram as it is', function() {
+
+      // given
+      const inputDiagram = fs.readFileSync(INPUT_PATH, 'utf8');
+
+      // when
+      const result = exec(binPath, [
+        '-i',
+        INPUT_PATH,
+        '-o',
+        OUTPUT_PATH
+      ]);
+
+      // then
+      expect(result.exitCode).to.eql(0);
+      expect(result.stdout).to.eql('');
+      expect(result.stderr).to.eql('');
+
+      const outputDiagram = fs.readFileSync(OUTPUT_PATH, 'utf8');
+      expect(outputDiagram).to.eql(inputDiagram);
+    });
+  });
 });

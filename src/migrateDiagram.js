@@ -24,14 +24,14 @@ const DMN11URI = '"http://www.omg.org/spec/DMN/20151101/dmn.xsd"',
  *
  * @param {string} xml
  *
- * @returns {string}
+ * @returns {Promise<string>}
  */
 module.exports.migrateTo13 = function migrateTo13(xml) {
 
   if (hasNamespace(DMN11URI, xml)) {
     return migrateFrom11To13(xml);
   } else if (hasNamespace(DMN13URI, xml)) {
-    return xml;
+    return Promise.resolve(xml);
   }
 
   throw new Error('unknown namespace');

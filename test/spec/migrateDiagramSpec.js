@@ -55,6 +55,23 @@ describe('migrateDiagram', function() {
   });
 
 
+  it('should resolve with same xml if diagram is already migrated', function(done) {
+
+    // given
+    const xml = fs.readFileSync('test/fixtures/diagram-1-3.dmn', 'utf8');
+
+    // when
+    migrateDiagram(xml)
+      .then(migratedXml => {
+
+        // then
+        expect(migratedXml).to.eql(xml);
+        done();
+      })
+      .catch(done);
+  });
+
+
   it('should fail when diagram cannot be parsed', async function() {
 
     // given
