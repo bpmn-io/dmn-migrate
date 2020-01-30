@@ -1,11 +1,9 @@
 import json from '@rollup/plugin-json';
-import resolve from '@rollup/plugin-node-resolve';
 
 import pkg from './package.json';
 
 function pgl(plugins=[]) {
   return [
-    resolve(),
     json(),
     ...plugins
   ];
@@ -19,6 +17,11 @@ export default [
     output: [
       { file: pkg.main, format: 'cjs' },
       { file: pkg.module, format: 'es' }
+    ],
+    external: [
+      'dmn-moddle',
+      'ids',
+      'min-dash'
     ],
     plugins: pgl()
   }
