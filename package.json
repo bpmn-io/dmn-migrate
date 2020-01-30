@@ -1,6 +1,6 @@
 {
   "name": "@bpmn-io/dmn-migrate",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Migrate DMN diagrams from one version of the standard to another.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
