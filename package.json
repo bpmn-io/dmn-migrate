@@ -2,13 +2,19 @@
   "name": "@bpmn-io/dmn-migrate",
   "version": "0.1.1",
   "description": "Migrate DMN diagrams from one version of the standard to another.",
-  "main": "src/migrateDiagram.js",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "source": "src/migrateDiagram.js",
   "bin": "bin/migrate",
   "scripts": {
+    "build": "rollup -c",
+    "distro": "run-s build test:build",
     "lint": "eslint .",
-    "test": "mocha --reporter=spec --recursive test/spec",
+    "prepublishOnly": "run-s distro",
+    "test": "mocha -r esm --reporter=spec --recursive test/spec",
+    "test:build": "mocha --reporter=spec --recursive test/distro",
     "test:integration": "mocha --reporter=spec --recursive test/integration",
-    "all": "run-s lint test"
+    "all": "run-s lint test distro test:integration"
   },
   "repository": {
     "type": "git",
@@ -37,13 +43,17 @@
     "mri": "^1.1.4"
   },
   "devDependencies": {
+    "@rollup/plugin-json": "^4.0.0",
+    "@rollup/plugin-node-resolve": "^7.0.0",
     "chai": "^4.2.0",
     "del": "^5.1.0",
     "eslint": "^6.8.0",
     "eslint-plugin-bpmn-io": "^0.10.0",
+    "esm": "^3.2.25",
     "execa": "^4.0.0",
     "mocha": "^7.0.0",
     "npm-run-all": "^4.1.5",
+    "rollup": "^1.27.8",
     "xsd-schema-validator": "^0.6.0"
   }
 }

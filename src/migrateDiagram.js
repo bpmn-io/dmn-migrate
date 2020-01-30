@@ -1,15 +1,16 @@
-const DmnModdle = require('dmn-moddle');
+import DmnModdle from 'dmn-moddle';
 
-const Ids = new require('ids'),
-      ids = new Ids([ 32, 36, 1 ]);
+import Ids from 'ids';
 
-const {
+import {
   isArray,
   isFunction,
   some
-} = require('min-dash');
+} from 'min-dash';
 
-const BiodiPackage = require ('../resources/dmn/json/biodi.json');
+import BiodiPackage from '../resources/dmn/json/biodi.json';
+
+const ids = new Ids([ 32, 36, 1 ]);
 
 const moddle = new DmnModdle({
   biodi: BiodiPackage
@@ -26,7 +27,7 @@ const DMN11URI = '"http://www.omg.org/spec/DMN/20151101/dmn.xsd"',
  *
  * @returns {Promise<string>}
  */
-module.exports.migrateTo13 = function migrateTo13(xml) {
+export function migrateTo13(xml) {
 
   if (hasNamespace(DMN11URI, xml)) {
     return migrateFrom11To13(xml);
@@ -35,7 +36,7 @@ module.exports.migrateTo13 = function migrateTo13(xml) {
   }
 
   throw new Error('unknown namespace');
-};
+}
 
 /**
  * Check if XML has namespace.
