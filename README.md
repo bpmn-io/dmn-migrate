@@ -2,11 +2,8 @@
 
 [![Build Status](https://travis-ci.com/bpmn-io/dmn-migrate.svg?branch=master)](https://travis-ci.com/bpmn-io/dmn-migrate)
 
-Migrate DMN diagrams from one version of the standard to another (e.g. DMN 1.1 to 1.3).
+Migrate your DMN diagrams to the latest DMN version. Current target version: __DMN 1.3__.
 
-Currently supported migration paths:
-
-* DMN 1.1 to DMN 1.3
 
 ## Usage
 
@@ -23,12 +20,9 @@ dmn-migrate --input ./dmn11.dmn --output ./dmn13.dmn
 ### Through JavaScript API
 
 ```javascript
-const { migrateTo13 } = require('@bpmn-io/dmn-migrate');
+const { migrateDMN } = require('@bpmn-io/dmn-migrate');
 
-migrateTo13(dmn11XML)
-  .then(dmn13XML => {
-    // ...
-  });
+const migratedXML = await migrateDMN(dmn11XML);
 ```
 
 ## License
