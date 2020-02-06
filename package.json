@@ -5,6 +5,9 @@
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "source": "src/migrateDiagram.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "rollup -c",
     "distro": "run-s build test:build",
