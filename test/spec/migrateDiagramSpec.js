@@ -40,10 +40,10 @@ describe('migrateDiagram', function() {
 
   this.timeout(10000);
 
-  it('should migrate diagram', async function() {
+  it('should migrate DMN 1.1 diagram', async function() {
 
     // given
-    let xml = fs.readFileSync('test/fixtures/diagram.dmn', 'utf8');
+    let xml = fs.readFileSync('test/fixtures/diagram-1-1.dmn', 'utf8');
 
     // when
     xml = await migrateDiagram(xml);
@@ -55,20 +55,31 @@ describe('migrateDiagram', function() {
   });
 
 
-  it('should resolve with same xml if diagram is already migrated', function(done) {
+  it('should migrate DMN 1.2 diagram', async function() {
+
+    // given
+    let xml = fs.readFileSync('test/fixtures/diagram-1-2.dmn', 'utf8');
+
+    // when
+    xml = await migrateDiagram(xml);
+
+    const result = await validate(xml);
+
+    // then
+    expect(result.valid).to.be.true;
+  });
+
+
+  it('should migrate DMN 1.3 diagram', async function() {
 
     // given
     const xml = fs.readFileSync('test/fixtures/diagram-1-3.dmn', 'utf8');
 
     // when
-    migrateDiagram(xml)
-      .then(migratedXml => {
+    const migratedXml = await migrateDiagram(xml);
 
-        // then
-        expect(migratedXml).to.eql(xml);
-        done();
-      })
-      .catch(done);
+    // then
+    expect(xml).to.eql(migratedXml);
   });
 
 

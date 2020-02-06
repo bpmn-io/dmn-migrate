@@ -16,8 +16,9 @@ const moddle = new DmnModdle({
   biodi: BiodiPackage
 });
 
-const DMN11URI = '"http://www.omg.org/spec/DMN/20151101/dmn.xsd"',
-      DMN13URI = '"https://www.omg.org/spec/DMN/20191111/MODEL/"';
+const DMN11URI = '"http://www.omg.org/spec/DMN/20151101/dmn.xsd"';
+const DMN12URI = '"http://www.omg.org/spec/DMN/20180521/MODEL/"';
+const DMN13URI = '"https://www.omg.org/spec/DMN/20191111/MODEL/"';
 
 
 /**
@@ -29,7 +30,9 @@ const DMN11URI = '"http://www.omg.org/spec/DMN/20151101/dmn.xsd"',
  */
 export function migrateDiagram(xml) {
 
-  if (hasNamespace(DMN11URI, xml)) {
+  if (hasNamespace(DMN12URI, xml)) {
+    return migrateFrom12To13(xml);
+  } else if (hasNamespace(DMN11URI, xml)) {
     return migrateFrom11To13(xml);
   } else if (hasNamespace(DMN13URI, xml)) {
     return Promise.resolve(xml);
@@ -48,6 +51,21 @@ export function migrateDiagram(xml) {
  */
 function hasNamespace(namespace, xml) {
   return xml.includes(namespace);
+}
+
+/**
+ * Migrate DMN 1.1 XML to 1.3.
+ *
+ * @param {string} xml
+ *
+ * @returns {string}
+ */
+function migrateFrom12To13(xml) {
+  return new Promise(resolve => resolve(
+    xml
+      .replace(DMN12URI, DMN13URI)
+      .replace('"http://www.omg.org/spec/DMN/20180521/DMNDI/"', '"https://www.omg.org/spec/DMN/20191111/DMNDI/"')
+  ));
 }
 
 /**
