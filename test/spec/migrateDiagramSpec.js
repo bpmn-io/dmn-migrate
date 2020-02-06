@@ -6,7 +6,7 @@ const fs = require('fs');
 
 const { validateXML } = require('xsd-schema-validator');
 
-const { migrateTo13: migrateDiagram } = require('../../src/migrateDiagram');
+const { migrateDiagram } = require('../../src/migrateDiagram');
 
 const xsd = 'resources/dmn/xsd/DMN13.xsd';
 

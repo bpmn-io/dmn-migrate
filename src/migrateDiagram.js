@@ -27,7 +27,7 @@ const DMN11URI = '"http://www.omg.org/spec/DMN/20151101/dmn.xsd"',
  *
  * @returns {Promise<string>}
  */
-export function migrateTo13(xml) {
+export function migrateDiagram(xml) {
 
   if (hasNamespace(DMN11URI, xml)) {
     return migrateFrom11To13(xml);
