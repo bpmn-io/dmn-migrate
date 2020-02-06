@@ -13,6 +13,11 @@ const { migrateDiagram } = require('@bpmn-io/dmn-migrate');
 const migratedXML = await migrateDiagram(dmn11XML);
 ```
 
+## See also
+
+* [dmn-migrate-cli](https://github.com/bpmn-io/dmn-migrate-cli) - migrate your DMN diagrams from the command line
+
+
 ## License
 
 MIT
