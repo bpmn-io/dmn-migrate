@@ -102,7 +102,7 @@ describe('migrateDiagram', function() {
   });
 
 
-  it('should create DMNDiagramElement IDs', async function() {
+  it('should create DMNDI element IDs', async function() {
 
     // given
     let xml = readFile('test/fixtures/diagram-1-1.dmn');
@@ -167,6 +167,22 @@ describe('migrateDiagram', function() {
     // then
     expect(definitions.dmnDI).to.not.exist;
   });
+
+
+  it('should NOT create DMNDI on empty definitions', async function() {
+
+    // given
+    let xml = readFile('test/fixtures/empty-definitions.dmn');
+
+    // when
+    xml = await migrateDiagram(xml);
+
+    const definitions = await parse(xml);
+
+    // then
+    expect(definitions.dmnDI).not.to.exist;
+  });
+
 });
 
 
