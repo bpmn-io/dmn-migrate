@@ -6,6 +6,10 @@ All notable changes to [dmn-migrate](https://github.com/bpmn-io/dmn-migrate) are
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.3.1
+
+* `FIX`: generate IDs for newly created DI elements
+
 ## 0.3.0
 
 * `FEAT`: support migration from DMN 1.2 to DMN 1.3
