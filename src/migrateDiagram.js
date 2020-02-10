@@ -107,8 +107,17 @@ function migrateFrom11To13(xml) {
  * @param {Object} element
  */
 function addId(element) {
-  if (is(element, 'dmn:DMNElement') && !element.id) {
-    element.id = ids.nextPrefixed(element.$type.split(':').pop() + '_', element);
+
+  if (element.id) {
+    return;
+  }
+
+  if (is(element, 'dmndi:DMNDiagramElement')) {
+    element.id = element.dmnElementRef.id + '_di';
+  }
+
+  if (isAny(element, [ 'dmn:DMNElement', 'dmndi:DMNDiagram' ])) {
+    element.id = ids.nextPrefixed(element.$type.split(':')[1] + '_', element);
   }
 }
 
