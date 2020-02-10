@@ -43,7 +43,7 @@ describe('migrateDiagram', function() {
   it('should migrate DMN 1.1 diagram', async function() {
 
     // given
-    let xml = fs.readFileSync('test/fixtures/diagram-1-1.dmn', 'utf8');
+    let xml = readFile('test/fixtures/diagram-1-1.dmn');
 
     // when
     xml = await migrateDiagram(xml);
@@ -58,7 +58,7 @@ describe('migrateDiagram', function() {
   it('should migrate DMN 1.2 diagram', async function() {
 
     // given
-    let xml = fs.readFileSync('test/fixtures/diagram-1-2.dmn', 'utf8');
+    let xml = readFile('test/fixtures/diagram-1-2.dmn');
 
     // when
     xml = await migrateDiagram(xml);
@@ -73,7 +73,7 @@ describe('migrateDiagram', function() {
   it('should migrate DMN 1.3 diagram', async function() {
 
     // given
-    const xml = fs.readFileSync('test/fixtures/diagram-1-3.dmn', 'utf8');
+    const xml = readFile('test/fixtures/diagram-1-3.dmn');
 
     // when
     const migratedXml = await migrateDiagram(xml);
@@ -102,10 +102,32 @@ describe('migrateDiagram', function() {
   });
 
 
+  it('should create DMNDiagramElement IDs', async function() {
+
+    // given
+    let xml = readFile('test/fixtures/diagram-1-1.dmn');
+
+    // when
+    xml = await migrateDiagram(xml);
+
+    const definitions = await parse(xml);
+
+    // then
+    const diagram = definitions.dmnDI.diagrams[0];
+    const diagramElements = diagram.diagramElements;
+
+    expect(diagram).to.have.property('id');
+
+    for (const diagramElement of diagramElements) {
+      expect(diagramElement).to.have.property('id');
+    }
+  });
+
+
   it('should create DMNDI for Text Annotation and Association', async function() {
 
     // given
-    let xml = fs.readFileSync('test/fixtures/text-annotation.dmn', 'utf8');
+    let xml = readFile('test/fixtures/text-annotation.dmn');
 
     // when
     xml = await migrateDiagram(xml);
@@ -120,7 +142,7 @@ describe('migrateDiagram', function() {
   it('should migrate diagram with prefixed dmn namespace', async function() {
 
     // given
-    let xml = fs.readFileSync('test/fixtures/prefixed-namespace.dmn', 'utf8');
+    let xml = readFile('test/fixtures/prefixed-namespace.dmn');
 
     // when
     xml = await migrateDiagram(xml);
@@ -135,7 +157,7 @@ describe('migrateDiagram', function() {
   it('should not create DMNDI in case if no DI information is included', async function() {
 
     // given
-    let xml = fs.readFileSync('test/fixtures/prefixed-namespace.dmn', 'utf8');
+    let xml = readFile('test/fixtures/prefixed-namespace.dmn');
 
     // when
     xml = await migrateDiagram(xml);
@@ -146,3 +168,11 @@ describe('migrateDiagram', function() {
     expect(definitions.dmnDI).to.not.exist;
   });
 });
+
+
+
+// helper ///////////////
+
+function readFile(path) {
+  return fs.readFileSync(path, 'utf8');
+}
