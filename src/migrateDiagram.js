@@ -5,6 +5,7 @@ import Ids from 'ids';
 import {
   isArray,
   isFunction,
+  isString,
   some
 } from 'min-dash';
 
@@ -20,7 +21,6 @@ const DMN11URI = '"http://www.omg.org/spec/DMN/20151101/dmn.xsd"';
 const DMN12URI = '"http://www.omg.org/spec/DMN/20180521/MODEL/"';
 const DMN13URI = '"https://www.omg.org/spec/DMN/20191111/MODEL/"';
 
-
 /**
  * Migrate DMN 1.1 XML to 1.3.
  *
@@ -29,16 +29,28 @@ const DMN13URI = '"https://www.omg.org/spec/DMN/20191111/MODEL/"';
  * @returns {Promise<string>}
  */
 export function migrateDiagram(xml) {
+  return new Promise((resolve, reject) => {
+    if (!isString(xml)) {
 
-  if (hasNamespace(DMN12URI, xml)) {
-    return migrateFrom12To13(xml);
-  } else if (hasNamespace(DMN11URI, xml)) {
-    return migrateFrom11To13(xml);
-  } else if (hasNamespace(DMN13URI, xml)) {
-    return Promise.resolve(xml);
-  }
+      // return XML without migrating
+      return resolve(xml);
+    }
 
-  throw new Error('unknown namespace');
+    try {
+      if (hasNamespace(DMN11URI, xml)) {
+        return resolve(migrateFrom11To13(xml));
+      } else if (hasNamespace(DMN12URI, xml)) {
+        return resolve(migrateFrom12To13(xml));
+      } else if (hasNamespace(DMN13URI, xml)) {
+        return resolve(xml);
+      }
+    } catch (err) {
+      return reject(err);
+    }
+
+    // return XML without migrating
+    return resolve(xml);
+  });
 }
 
 /**
@@ -77,24 +89,30 @@ function migrateFrom12To13(xml) {
  */
 function migrateFrom11To13(xml) {
   return new Promise((resolve, reject) => {
-    xml = xml.replace(DMN11URI, DMN13URI);
+    const namespaceReplacedXML = xml.replace(DMN11URI, DMN13URI);
 
-    moddle.fromXML(xml, 'dmn:Definitions', (err, definitions) => {
-      if (err) {
-        return reject(err);
+    moddle.fromXML(namespaceReplacedXML, 'dmn:Definitions', (parsingError, definitions) => {
+      if (parsingError) {
+
+        // return XML without migrating
+        return resolve(xml);
       }
 
-      addIds(definitions);
+      try {
+        addIds(definitions);
 
-      addNames(definitions);
+        addNames(definitions);
 
-      migrateDI(definitions, moddle);
+        migrateDI(definitions, moddle);
+      } catch (migrationError) {
+        return reject(migrationError);
+      }
 
-      moddle.toXML(definitions, { format: true }, (err, xml) => {
-        if (err) {
-          reject(err);
+      moddle.toXML(definitions, { format: true }, (serializationError, migratedXML) => {
+        if (serializationError) {
+          return reject(serializationError);
         } else {
-          resolve(xml);
+          return resolve(migratedXML);
         }
       });
     });
