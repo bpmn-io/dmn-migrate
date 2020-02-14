@@ -6,6 +6,11 @@ All notable changes to [dmn-migrate](https://github.com/bpmn-io/dmn-migrate) are
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.4.0
+
+* `FEAT`: only fail on migration, not on import errors ([#16](https://github.com/bpmn-io/dmn-migrate/issues/16))
+* `CHORE`: handle broken input
+
 ## 0.3.1
 
 * `FIX`: generate IDs for newly created DI elements
