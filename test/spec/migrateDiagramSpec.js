@@ -80,6 +80,8 @@ describe('migrateDiagram', function() {
 
     for (const diagramElement of diagramElements) {
       expect(diagramElement).to.have.property('id');
+
+      expect(diagramElement.id).to.match(/DMN(Shape|Edge)_[^_]+/);
     }
   });
 

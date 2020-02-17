@@ -132,11 +132,11 @@ function addId(element) {
     return;
   }
 
-  if (is(element, 'dmndi:DMNDiagramElement')) {
-    element.id = element.dmnElementRef.id + '_di';
-  }
-
-  if (isAny(element, [ 'dmn:DMNElement', 'dmndi:DMNDiagram' ])) {
+  if (isAny(element, [
+    'dmn:DMNElement',
+    'dmndi:DMNDiagram',
+    'dmndi:DMNDiagramElement'
+  ])) {
     element.id = ids.nextPrefixed(element.$type.split(':')[1] + '_', element);
   }
 }
