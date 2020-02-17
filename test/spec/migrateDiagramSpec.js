@@ -11,7 +11,7 @@ import fs from 'fs';
 
 import { validateXML } from 'xsd-schema-validator';
 
-import { migrateDiagram } from '../../src/migrateDiagram';
+import { migrateDiagram, TARGET_DMN_VERSION } from '../../src/migrateDiagram';
 
 const xsd = 'resources/dmn/xsd/DMN13.xsd';
 
@@ -220,6 +220,11 @@ describe('migrateDiagram', function() {
       migrate().should.be.rejectedWith('Cannot set property \'$parent\' of undefined');
     });
 
+  });
+
+
+  it('should export { TARGET_DMN_VERSION }', function() {
+    expect(TARGET_DMN_VERSION).to.eql('1.3');
   });
 
 });

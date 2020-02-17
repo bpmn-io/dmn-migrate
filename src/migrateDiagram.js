@@ -119,6 +119,8 @@ function migrateFrom11To13(xml) {
   });
 }
 
+export const TARGET_DMN_VERSION = '1.3';
+
 /**
  * Add ID to element if required.
  *
