@@ -6,6 +6,10 @@ All notable changes to [dmn-migrate](https://github.com/bpmn-io/dmn-migrate) are
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.4.2
+
+* `FIX`: generate semantic ids for DMNDI elements
+
 ## 0.4.1
 
 * `CHORE`: export `{ TARGET_DMN_VERSION }`
