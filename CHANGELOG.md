@@ -6,6 +6,10 @@ All notable changes to [dmn-migrate](https://github.com/bpmn-io/dmn-migrate) are
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.4.1
+
+* `CHORE`: export `{ TARGET_DMN_VERSION }`
+
 ## 0.4.0
 
 * `FEAT`: only fail on migration, not on import errors ([#16](https://github.com/bpmn-io/dmn-migrate/issues/16))
