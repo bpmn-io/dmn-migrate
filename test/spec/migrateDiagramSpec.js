@@ -212,19 +212,10 @@ describe('migrateDiagram', function() {
     });
 
 
-    it('should error on migration error', async function() {
-
-      // given
-      const xml = read('test/fixtures/diagram-1-1-missing-source-attribute.dmn');
-
-      const migrate = () => {
-        return migrateDiagram(xml);
-      };
-
-      // when
-      // then
-      expect(migrate()).to.eventually.be.rejectedWith('Cannot set property \'$parent\' of undefined');
-    });
+    // TODO(nikku): someone come up with a smart error
+    // that we can use to test blow-up behavior (without
+    // jeopardizing our forgiveness)
+    it('should throw migration error');
 
   });
 
