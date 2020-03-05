@@ -2,7 +2,6 @@ import chai, { expect } from 'chai';
 
 import chaiAsPromised from 'chai-as-promised';
 
-chai.should();
 chai.use(chaiAsPromised);
 
 import Moddle from 'dmn-moddle';
@@ -15,50 +14,55 @@ import { migrateDiagram, TARGET_DMN_VERSION } from '../../src/migrateDiagram';
 
 const xsd = 'resources/dmn/xsd/DMN13.xsd';
 
+
 describe('migrateDiagram', function() {
 
   this.timeout(10000);
 
-  it('should migrate DMN 1.1 diagram', async function() {
+  describe('DMN support', function() {
 
-    // given
-    let xml = read('test/fixtures/diagram-1-1.dmn');
+    it('should migrate DMN 1.1 diagram', async function() {
 
-    // when
-    xml = await migrateDiagram(xml);
+      // given
+      let xml = read('test/fixtures/diagram-1-1.dmn');
 
-    const result = await validate(xml);
+      // when
+      xml = await migrateDiagram(xml);
 
-    // then
-    expect(result.valid).to.be.true;
-  });
+      const result = await validate(xml);
 
-
-  it('should migrate DMN 1.2 diagram', async function() {
-
-    // given
-    let xml = read('test/fixtures/diagram-1-2.dmn');
-
-    // when
-    xml = await migrateDiagram(xml);
-
-    const result = await validate(xml);
-
-    // then
-    expect(result.valid).to.be.true;
-  });
+      // then
+      expect(result.valid).to.be.true;
+    });
 
 
-  it('should migrate DMN 1.3 diagram', async function() {
+    it('should migrate DMN 1.2 diagram', async function() {
 
-    // given
-    const xml = read('test/fixtures/diagram-1-3.dmn');
+      // given
+      let xml = read('test/fixtures/diagram-1-2.dmn');
 
-    // when
-    const migratedXml = await migrateDiagram(xml);
+      // when
+      xml = await migrateDiagram(xml);
 
-    // then
-    expect(xml).to.eql(migratedXml);
+      const result = await validate(xml);
+
+      // then
+      expect(result.valid).to.be.true;
+    });
+
+
+    it('should migrate DMN 1.3 diagram', async function() {
+
+      // given
+      const xml = read('test/fixtures/diagram-1-3.dmn');
+
+      // when
+      const migratedXml = await migrateDiagram(xml);
+
+      // then
+      expect(xml).to.eql(migratedXml);
+    });
+
   });
 
 
@@ -159,7 +163,7 @@ describe('migrateDiagram', function() {
 
       // when
       // then
-      migrate().should.eventually.equal(xml);
+      expect(migrate()).to.eventually.equal(xml);
     });
 
 
@@ -174,7 +178,7 @@ describe('migrateDiagram', function() {
 
       // when
       // then
-      migrate().should.eventually.equal(xml);
+      expect(migrate()).to.eventually.equal(xml);
     });
 
 
@@ -189,7 +193,7 @@ describe('migrateDiagram', function() {
 
       // when
       // then
-      migrate().should.eventually.equal(xml);
+      expect(migrate()).to.eventually.equal(xml);
     });
 
 
@@ -204,7 +208,7 @@ describe('migrateDiagram', function() {
 
       // when
       // then
-      migrate().should.eventually.equal(xml);
+      expect(migrate()).to.eventually.equal(xml);
     });
 
 
@@ -219,7 +223,7 @@ describe('migrateDiagram', function() {
 
       // when
       // then
-      migrate().should.be.rejectedWith('Cannot set property \'$parent\' of undefined');
+      expect(migrate()).to.eventually.be.rejectedWith('Cannot set property \'$parent\' of undefined');
     });
 
   });
