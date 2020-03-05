@@ -35,7 +35,7 @@ describe('integration', function() {
 
   this.timeout(10000);
 
-  verify('test/fixtures/integration/18.dmn');
+  verify('test/fixtures/integration/non-existing-source.dmn');
 
 });
 

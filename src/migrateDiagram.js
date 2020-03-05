@@ -320,14 +320,20 @@ function migrateDI(definitions, moddle) {
       }
 
       if (is(extensionElement, 'biodi:Edge')) {
+        const dmnElementRef = getDMNElementRef(semantic, extensionElement.get('source'));
+
+        // referenced DMN element does not exist,
+        // we can happily ignore this: https://github.com/bpmn-io/dmn-migrate/issues/18
+        if (!dmnElementRef) {
+          return;
+        }
+
         const waypoints = extensionElement.get('waypoints').map(waypoint => {
           return moddle.create('dc:Point', {
             x: waypoint.get('x'),
             y: waypoint.get('y')
           });
         });
-
-        const dmnElementRef = getDMNElementRef(semantic, extensionElement.get('source'));
 
         const edge = moddle.create('dmndi:DMNEdge', {
           dmnElementRef,

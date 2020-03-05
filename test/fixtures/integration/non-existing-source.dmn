@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/1.0" id="dinnerDecisions" name="Dinner Decisions" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="3.7.0">
+  <inputData id="InputData_0pgvdj9" name="Guests with children?">
+    <extensionElements>
+      <biodi:bounds x="420" y="239" width="125" height="45" />
+    </extensionElements>
+  </inputData>
+  <decision id="dish" name="Dish">
+    <extensionElements>
+      <biodi:bounds x="153" y="240" width="180" height="80" />
+    </extensionElements>
+  </decision>
+  <decision id="beverages" name="Beverages">
+    <extensionElements>
+      <biodi:bounds x="292" y="86" width="180" height="80" />
+      <biodi:edge source="NON_EXISTING">
+        <biodi:waypoints x="104" y="338" />
+        <biodi:waypoints x="163" y="264" />
+      </biodi:edge>
+      <biodi:edge source="InputData_0pgvdj9">
+        <biodi:waypoints x="472" y="239" />
+        <biodi:waypoints x="425" y="166" />
+      </biodi:edge>
+      <biodi:edge source="dish">
+        <biodi:waypoints x="284" y="240" />
+        <biodi:waypoints x="360" y="166" />
+      </biodi:edge>
+    </extensionElements>
+    <informationRequirement>
+      <requiredInput href="#InputData_0pgvdj9" />
+    </informationRequirement>
+    <informationRequirement>
+      <requiredDecision href="#dish" />
+    </informationRequirement>
+  </decision>
+</definitions>
