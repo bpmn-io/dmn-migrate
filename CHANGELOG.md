@@ -6,6 +6,10 @@ All notable changes to [dmn-migrate](https://github.com/bpmn-io/dmn-migrate) are
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.4.3
+
+* `FIX`: gracefully handle missing `biodi:Edge#source` ([#18](https://github.com/bpmn-io/dmn-migrate/issues/18))
+
 ## 0.4.2
 
 * `FIX`: generate semantic ids for DMNDI elements
