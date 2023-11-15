@@ -1,6 +1,6 @@
 # dmn-migrate
 
-[![Build Status](https://travis-ci.com/bpmn-io/dmn-migrate.svg?branch=master)](https://travis-ci.com/bpmn-io/dmn-migrate)
+[![CI](https://github.com/bpmn-io/dmn-migrate/workflows/CI/badge.svg)](https://github.com/bpmn-io/dmn-migrate/actions?query=workflow%3ACI)
 
 Migrate your DMN diagrams to the latest DMN version (currently __DMN 1.3__).
 
