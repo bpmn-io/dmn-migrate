@@ -4,7 +4,7 @@ import chaiAsPromised from 'chai-as-promised';
 
 chai.use(chaiAsPromised);
 
-import Moddle from 'dmn-moddle';
+import DmnModdle from 'dmn-moddle';
 
 import fs from 'fs';
 
@@ -243,7 +243,7 @@ async function validate(xml) {
 }
 
 async function parse(xml) {
-  const moddle = Moddle();
+  const moddle = DmnModdle();
 
   const {
     rootElement: definitions
