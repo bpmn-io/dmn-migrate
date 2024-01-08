@@ -28,29 +28,23 @@ const DMN13URI = '"https://www.omg.org/spec/DMN/20191111/MODEL/"';
  *
  * @returns {Promise<string>}
  */
-export function migrateDiagram(xml) {
-  return new Promise((resolve, reject) => {
-    if (!isString(xml)) {
-
-      // return XML without migrating
-      return resolve(xml);
-    }
-
-    try {
-      if (hasNamespace(DMN11URI, xml)) {
-        return resolve(migrateFrom11To13(xml));
-      } else if (hasNamespace(DMN12URI, xml)) {
-        return resolve(migrateFrom12To13(xml));
-      } else if (hasNamespace(DMN13URI, xml)) {
-        return resolve(xml);
-      }
-    } catch (err) {
-      return reject(err);
-    }
+export async function migrateDiagram(xml) {
+  if (!isString(xml)) {
 
     // return XML without migrating
-    return resolve(xml);
-  });
+    return xml;
+  }
+
+  if (hasNamespace(DMN11URI, xml)) {
+    return migrateFrom11To13(xml);
+  } else if (hasNamespace(DMN12URI, xml)) {
+    return migrateFrom12To13(xml);
+  } else if (hasNamespace(DMN13URI, xml)) {
+    return xml;
+  }
+
+  // return XML without migrating
+  return xml;
 }
 
 /**
@@ -70,14 +64,23 @@ function hasNamespace(namespace, xml) {
  *
  * @param {string} xml
  *
- * @returns {string}
+ * @returns {Promise<string>}
  */
-function migrateFrom12To13(xml) {
-  return new Promise(resolve => resolve(
-    xml
-      .replace(DMN12URI, DMN13URI)
-      .replace('"http://www.omg.org/spec/DMN/20180521/DMNDI/"', '"https://www.omg.org/spec/DMN/20191111/DMNDI/"')
-  ));
+async function migrateFrom12To13(xml) {
+  return xml
+    .replace(DMN12URI, DMN13URI)
+    .replace('"http://www.omg.org/spec/DMN/20180521/DMNDI/"', '"https://www.omg.org/spec/DMN/20191111/DMNDI/"');
+}
+
+/**
+ * @param {string} xml
+ * @return {Promise<[ definitions: any, error: any | null ]>}
+ */
+async function parse13Defininitions(xml) {
+  return moddle.fromXML(xml, 'dmn:Definitions').then(
+    result => [ result.rootElement, null ],
+    error => [ null, error ]
+  );
 }
 
 /**
@@ -87,36 +90,26 @@ function migrateFrom12To13(xml) {
  *
  * @returns {string}
  */
-function migrateFrom11To13(xml) {
-  return new Promise((resolve, reject) => {
-    const namespaceReplacedXML = xml.replace(DMN11URI, DMN13URI);
+async function migrateFrom11To13(xml) {
 
-    moddle.fromXML(namespaceReplacedXML, 'dmn:Definitions', (parsingError, definitions) => {
-      if (parsingError) {
+  const namespaceReplacedXML = xml.replace(DMN11URI, DMN13URI);
 
-        // return XML without migrating
-        return resolve(xml);
-      }
+  const [ definitions, parsingError ] = await parse13Defininitions(namespaceReplacedXML);
 
-      try {
-        addIds(definitions);
+  // return XML without migrating
+  if (parsingError) {
+    return xml;
+  }
 
-        addNames(definitions);
+  addIds(definitions);
 
-        migrateDI(definitions, moddle);
-      } catch (migrationError) {
-        return reject(migrationError);
-      }
+  addNames(definitions);
 
-      moddle.toXML(definitions, { format: true }, (serializationError, migratedXML) => {
-        if (serializationError) {
-          return reject(serializationError);
-        } else {
-          return resolve(migratedXML);
-        }
-      });
-    });
-  });
+  migrateDI(definitions, moddle);
+
+  const { xml: migratedXML } = await moddle.toXML(definitions, { format: true });
+
+  return migratedXML;
 }
 
 export const TARGET_DMN_VERSION = '1.3';
