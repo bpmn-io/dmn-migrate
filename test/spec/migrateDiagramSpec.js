@@ -242,18 +242,14 @@ async function validate(xml) {
   });
 }
 
-function parse(xml) {
-  return new Promise((resolve, reject) => {
-    const moddle = Moddle();
+async function parse(xml) {
+  const moddle = Moddle();
 
-    moddle.fromXML(xml, (err, definitions) => {
-      if (err) {
-        return reject(err);
-      }
+  const {
+    rootElement: definitions
+  } = await moddle.fromXML(xml);
 
-      resolve(definitions);
-    });
-  });
+  return definitions;
 }
 
 function read(path, encoding = 'utf8') {
