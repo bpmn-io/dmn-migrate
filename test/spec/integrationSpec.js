@@ -9,7 +9,7 @@ import { migrateDiagram } from '../../src/migrateDiagram';
 const xsd = 'resources/dmn/xsd/DMN13.xsd';
 
 
-function verify(fileName, iit=it) {
+function verify(fileName, iit = it) {
 
   iit(`should migrate <${fileName}>`, async function() {
 

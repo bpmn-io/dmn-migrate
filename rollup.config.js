@@ -2,7 +2,7 @@ import json from '@rollup/plugin-json';
 
 import pkg from './package.json';
 
-function pgl(plugins=[]) {
+function pgl(plugins = []) {
   return [
     json(),
     ...plugins
