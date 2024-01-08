@@ -6,6 +6,12 @@ All notable changes to [dmn-migrate](https://github.com/bpmn-io/dmn-migrate) are
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.5.0
+
+* `FEAT`: migrate to `async` APIs
+* `DEPS`: update to `dmn-moddle@10.0.0`
+* `DEPS`: update to `min-dash@4.1.1`
+
 ## 0.4.3
 
 * `FIX`: gracefully handle missing `biodi:Edge#source` ([#18](https://github.com/bpmn-io/dmn-migrate/issues/18))
