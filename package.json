@@ -34,7 +34,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "dmn-moddle": "^8.0.0",
+    "dmn-moddle": "^10.0.0",
     "ids": "^1.0.0",
     "min-dash": "^3.5.2"
   },
