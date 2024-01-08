@@ -9,7 +9,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c --bundleConfigAsCjs",
     "distro": "run-s build test:build",
     "lint": "eslint .",
     "prepublishOnly": "run-s distro",
@@ -39,7 +39,7 @@
     "min-dash": "^4.1.1"
   },
   "devDependencies": {
-    "@rollup/plugin-json": "^4.0.0",
+    "@rollup/plugin-json": "^6.1.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "eslint": "^8.56.0",
@@ -48,7 +48,7 @@
     "execa": "^4.0.0",
     "mocha": "^7.0.0",
     "npm-run-all": "^4.1.5",
-    "rollup": "^1.27.8",
+    "rollup": "^4.9.4",
     "xsd-schema-validator": "^0.6.0"
   },
   "files": [
