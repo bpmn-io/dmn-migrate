@@ -12,13 +12,17 @@ export default [
       ...config,
       files: [
         'test/**/*.js'
-      ],
-      languageOptions: {
-        globals: {
-          ...config.languageOptions.globals,
-          require: false
-        }
-      }
+      ]
     };
-  })
+  }),
+  {
+    files: [
+      'test/**/*.js'
+    ],
+    languageOptions: {
+      globals: {
+        require: false
+      }
+    }
+  }
 ];
