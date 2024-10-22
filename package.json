@@ -46,7 +46,7 @@
     "eslint-plugin-bpmn-io": "^2.0.2",
     "esm": "^3.2.25",
     "mocha": "^7.0.0",
-    "npm-run-all2": "^6.0.0",
+    "npm-run-all2": "^7.0.0",
     "rollup": "^4.9.4",
     "xsd-schema-validator": "^0.7.0"
   },
