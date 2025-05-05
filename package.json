@@ -40,12 +40,12 @@
   },
   "devDependencies": {
     "@rollup/plugin-json": "^6.1.0",
-    "chai": "^4.2.0",
-    "chai-as-promised": "^7.1.1",
+    "chai": "^5.0.0",
+    "chai-as-promised": "^8.0.0",
     "eslint": "^9.0.0",
     "eslint-plugin-bpmn-io": "^2.0.2",
     "esm": "^3.2.25",
-    "mocha": "^7.0.0",
+    "mocha": "^11.0.0",
     "npm-run-all2": "^8.0.0",
     "rollup": "^4.9.4",
     "xsd-schema-validator": "^0.7.0"
