@@ -1,8 +1,8 @@
-import chai, { expect } from 'chai';
+import { expect, use as chaiUse } from 'chai';
 
 import chaiAsPromised from 'chai-as-promised';
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
 
 import DmnModdle from 'dmn-moddle';
 
@@ -10,7 +10,7 @@ import fs from 'fs';
 
 import { validateXML } from 'xsd-schema-validator';
 
-import { migrateDiagram, TARGET_DMN_VERSION } from '../../src/migrateDiagram';
+import { migrateDiagram, TARGET_DMN_VERSION } from '@bpmn-io/dmn-migrate';
 
 const xsd = 'resources/dmn/xsd/DMN13.xsd';
 
@@ -243,7 +243,7 @@ async function validate(xml) {
 }
 
 async function parse(xml) {
-  const moddle = DmnModdle();
+  const moddle = new DmnModdle();
 
   const {
     rootElement: definitions

@@ -4,7 +4,7 @@ import fs from 'fs';
 
 import { validateXML } from 'xsd-schema-validator';
 
-import { migrateDiagram } from '../../src/migrateDiagram';
+import { migrateDiagram } from '@bpmn-io/dmn-migrate';
 
 const xsd = 'resources/dmn/xsd/DMN13.xsd';
 

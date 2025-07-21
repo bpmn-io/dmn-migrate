@@ -6,12 +6,17 @@ export default [
       'dist'
     ]
   },
+
+  // lib
   ...bpmnIoPlugin.configs.recommended,
+
+  // test
   ...bpmnIoPlugin.configs.mocha.map(config => {
     return {
       ...config,
       files: [
-        'test/**/*.js'
+        'test/**/*.js',
+        'test/**/*.cjs'
       ]
     };
   }),
