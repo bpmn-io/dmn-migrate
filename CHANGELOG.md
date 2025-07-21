@@ -6,6 +6,11 @@ All notable changes to [dmn-migrate](https://github.com/bpmn-io/dmn-migrate) are
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.6.0
+
+* `CHORE`: turn into ES module ([#44](https://github.com/bpmn-io/dmn-migrate/pull/44))
+* `DEPS`: update to `dmn-moddle@11` ([#43](https://github.com/bpmn-io/dmn-migrate/pull/43))
+
 ## 0.5.0
 
 * `FEAT`: migrate to `async` APIs
