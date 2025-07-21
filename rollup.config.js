@@ -9,14 +9,14 @@ function pgl(plugins = []) {
   ];
 }
 
-const srcEntry = pkg.source;
+const srcEntry = './src/migrateDiagram.js';
 
 export default [
   {
     input: srcEntry,
     output: [
-      { file: pkg.main, format: 'cjs' },
-      { file: pkg.module, format: 'es' }
+      { file: pkg.exports['.'].require, format: 'cjs' },
+      { file: pkg.exports['.'].import, format: 'es' }
     ],
     external: [
       'dmn-moddle',

@@ -2,24 +2,29 @@
   "name": "@bpmn-io/dmn-migrate",
   "version": "0.5.0",
   "description": "Migrate DMN diagrams to the latest DMN standard.",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
-  "source": "src/migrateDiagram.js",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
     "build": "rollup -c --bundleConfigAsCjs",
-    "distro": "run-s build test:build",
     "lint": "eslint .",
-    "prepublishOnly": "run-s distro",
-    "test": "mocha -r esm --reporter=spec --recursive test/spec",
+    "prepare": "run-s build",
+    "test": "mocha --reporter=spec --recursive test/spec",
     "test:build": "mocha --reporter=spec --recursive test/distro",
-    "all": "run-s lint test distro"
+    "all": "run-s lint build test test:build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bpmn-io/dmn-migrate.git"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./resources/*": "./resources/*",
+    "./package.json": "./package.json"
   },
   "keywords": [
     "dmn",
@@ -40,12 +45,11 @@
   },
   "devDependencies": {
     "@rollup/plugin-json": "^6.1.0",
-    "chai": "^4.2.0",
-    "chai-as-promised": "^7.1.1",
+    "chai": "^5.2.1",
+    "chai-as-promised": "^8.0.1",
     "eslint": "^9.0.0",
     "eslint-plugin-bpmn-io": "^2.0.2",
-    "esm": "^3.2.25",
-    "mocha": "^7.0.0",
+    "mocha": "^11.7.1",
     "npm-run-all2": "^8.0.0",
     "rollup": "^4.9.4",
     "xsd-schema-validator": "^0.7.0"
