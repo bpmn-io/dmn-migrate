@@ -44,15 +44,7 @@ describe('integration', function() {
 // helpers //////////
 
 async function validate(xml) {
-  return new Promise((resolve, reject) => {
-    validateXML(xml, xsd, (err, result) => {
-      if (err) {
-        return reject(err);
-      }
-
-      resolve(result);
-    });
-  });
+  return validateXML(xml, xsd);
 }
 
 function read(path, encoding = 'utf8') {

@@ -52,7 +52,7 @@
     "mocha": "^11.7.1",
     "npm-run-all2": "^8.0.0",
     "rollup": "^4.9.4",
-    "xsd-schema-validator": "^0.7.0"
+    "xsd-schema-validator": "^0.11.0"
   },
   "files": [
     "dist"
