@@ -1,6 +1,6 @@
 {
   "name": "@bpmn-io/dmn-migrate",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Migrate DMN diagrams to the latest DMN standard.",
   "publishConfig": {
     "access": "public"
