@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-json": "^6.1.0",
-    "chai": "^5.2.1",
+    "chai": "^6.0.0",
     "chai-as-promised": "^8.0.1",
     "eslint": "^9.31.0",
     "eslint-plugin-bpmn-io": "^2.2.0",
