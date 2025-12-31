@@ -41,7 +41,7 @@
   "dependencies": {
     "dmn-moddle": "^11.0.0",
     "ids": "^1.0.5",
-    "min-dash": "^4.1.1"
+    "min-dash": "^5.0.0"
   },
   "devDependencies": {
     "@rollup/plugin-json": "^6.1.0",
