@@ -6,6 +6,17 @@ All notable changes to [dmn-migrate](https://github.com/bpmn-io/dmn-migrate) are
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.7.0
+
+* `CHORE`: drop CJS distribution
+* `DEPS`: update to `dmn-moddle@12.0.0`
+* `DEPS`: update to `min-dash@5.0.0`
+* `DEPS`: update to `ids@3.0.0`
+
+### Breaking changes
+
+* Library is now ESM only, and can be consumed in Node >= 20.12
+
 ## 0.6.0
 
 * `CHORE`: turn into ES module ([#44](https://github.com/bpmn-io/dmn-migrate/pull/44))
