@@ -4,7 +4,7 @@ import chaiAsPromised from 'chai-as-promised';
 
 chaiUse(chaiAsPromised);
 
-import DmnModdle from 'dmn-moddle';
+import { DmnModdle } from 'dmn-moddle';
 
 import fs from 'fs';
 

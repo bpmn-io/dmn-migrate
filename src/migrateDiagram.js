@@ -1,4 +1,4 @@
-import DmnModdle from 'dmn-moddle';
+import { DmnModdle } from 'dmn-moddle';
 
 import Ids from 'ids';
 
