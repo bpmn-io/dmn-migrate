@@ -1,6 +1,6 @@
 import { DmnModdle } from 'dmn-moddle';
 
-import Ids from 'ids';
+import { Ids } from 'ids';
 
 import {
   isArray,
