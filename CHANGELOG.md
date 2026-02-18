@@ -6,6 +6,11 @@ All notable changes to [dmn-migrate](https://github.com/bpmn-io/dmn-migrate) are
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.7.1
+
+* `DEPS`: update to `ids@3.0.1`
+* `CHORE`: restore `main` export
+
 ## 0.7.0
 
 * `CHORE`: drop CJS distribution
