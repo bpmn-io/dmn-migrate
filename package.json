@@ -18,6 +18,7 @@
     "url": "git+https://github.com/bpmn-io/dmn-migrate.git"
   },
   "type": "module",
+  "main": "./dist/index.js",
   "exports": {
     ".": "./dist/index.js",
     "./resources/*": "./resources/*",
