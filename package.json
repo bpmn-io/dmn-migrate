@@ -45,7 +45,7 @@
     "@rollup/plugin-json": "^6.1.0",
     "chai": "^6.2.2",
     "chai-as-promised": "^8.0.2",
-    "eslint": "^9.39.2",
+    "eslint": "^10.0.0",
     "eslint-plugin-bpmn-io": "^2.2.0",
     "mocha": "^11.7.5",
     "npm-run-all2": "^9.0.0",
