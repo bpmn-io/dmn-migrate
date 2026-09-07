@@ -103,7 +103,13 @@ async function migrateFrom11To13(xml) {
 
   addIds(definitions);
 
+  const prefixes = collectPrefixes(definitions);
+
+  addImportNames(definitions, prefixes);
+
   addNames(definitions);
+
+  migrateTypeRefs(definitions, prefixes);
 
   migrateDI(definitions, moddle);
 
@@ -183,6 +189,136 @@ function addNames(element) {
 
     if (isArray(value)) {
       value.forEach(addNames);
+    }
+  });
+}
+
+/**
+ * Collect XML namespace prefixes declared on all elements.
+ *
+ * @param {Object} element
+ * @param {Map<string, string>} prefixes
+ *
+ * @returns {Map<string, string>} prefix to namespace URI
+ */
+function collectPrefixes(element, prefixes = new Map()) {
+  const attrs = element.$attrs || {};
+
+  for (const key of Object.keys(attrs)) {
+    const match = /^xmlns:(.+)$/.exec(key);
+
+    if (match && !prefixes.has(match[1])) {
+      prefixes.set(match[1], attrs[key]);
+    }
+  }
+
+  Object.values(element).forEach(value => {
+    if (value.$type) {
+      collectPrefixes(value, prefixes);
+    }
+
+    if (isArray(value)) {
+      value.forEach(v => {
+        if (v.$type) {
+          collectPrefixes(v, prefixes);
+        }
+      });
+    }
+  });
+
+  return prefixes;
+}
+
+/**
+ * Name imports after the prefix their namespace was declared with, so
+ * migrated type references use a readable FEEL qualified name.
+ *
+ * @param {Object} definitions
+ * @param {Map<string, string>} prefixes
+ */
+function addImportNames(definitions, prefixes) {
+  if (!prefixes.size) {
+    return;
+  }
+
+  const namespaces = new Map();
+
+  for (const [ prefix, namespace ] of prefixes) {
+    if (!namespaces.has(namespace)) {
+      namespaces.set(namespace, prefix);
+    }
+  }
+
+  definitions.get('import').forEach(imported => {
+    const name = namespaces.get(imported.namespace);
+
+    if (!imported.name && name) {
+      imported.name = name;
+    }
+  });
+}
+
+/**
+ * Migrate QName type references to FEEL qualified names.
+ *
+ * DMN 1.1 type references use XML QName syntax (`prefix:name`), while DMN
+ * 1.2+ references to imported types use FEEL qualified names based on the
+ * import name (`importName.name`), cf. https://issues.omg.org/issues/DMN12-94.
+ *
+ * References that cannot be resolved to an import are left unchanged.
+ *
+ * @param {Object} definitions
+ * @param {Map<string, string>} prefixes
+ */
+function migrateTypeRefs(definitions, prefixes) {
+  const importNames = new Map();
+
+  definitions.get('import').forEach(imported => {
+    if (imported.name && !importNames.has(imported.namespace)) {
+      importNames.set(imported.namespace, imported.name);
+    }
+  });
+
+  if (!importNames.size) {
+    return;
+  }
+
+  migrateTypeRefRec(definitions, prefixes, importNames);
+}
+
+/**
+ * Recursively migrate QName `typeRef` values to FEEL qualified names.
+ *
+ * @param {Object} element
+ * @param {Map<string, string>} prefixes
+ * @param {Map<string, string>} importNames namespace URI to import name
+ */
+function migrateTypeRefRec(element, prefixes, importNames) {
+  if (isString(element.typeRef)) {
+    const match = /^([^:]+):(.+)$/.exec(element.typeRef);
+
+    if (match) {
+      const namespace = prefixes.get(match[1]);
+
+      const importName = namespace && importNames.get(namespace);
+
+      if (importName) {
+        element.typeRef = `${importName}.${match[2]}`;
+      }
+    }
+  }
+
+  Object.values(element).forEach(value => {
+    if (value.$type) {
+      migrateTypeRefRec(value, prefixes, importNames);
+    }
+
+    if (isArray(value)) {
+      value.forEach(v => {
+        if (v.$type) {
+          migrateTypeRefRec(v, prefixes, importNames);
+        }
+      });
     }
   });
 }

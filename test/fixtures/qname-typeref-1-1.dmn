@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd"
+             xmlns:types="urn:example:types"
+             id="definitions_1"
+             name="QName migration example"
+             namespace="urn:example:model">
+  <import namespace="urn:example:types"
+          locationURI="types.dmn"
+          importType="http://www.omg.org/spec/DMN/20151101/dmn.xsd" />
+  <inputData id="input_1" name="Applicant">
+    <variable id="variable_1" name="Applicant" typeRef="types:Applicant" />
+  </inputData>
+  <decision id="decision_1" name="Decision">
+    <variable id="variable_2" name="Local" typeRef="number" />
+  </decision>
+</definitions>

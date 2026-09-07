@@ -105,6 +105,27 @@ describe('migrateDiagram', function() {
   });
 
 
+  it('should migrate QName typeRef values', async function() {
+
+    // given
+    let xml = read('test/fixtures/qname-typeref-1-1.dmn');
+
+    // when
+    xml = await migrateDiagram(xml);
+
+    const definitions = await parse(xml);
+
+    // then
+    const imported = definitions.get('import').find(({ namespace }) => namespace === 'urn:example:types');
+
+    expect(imported.name).to.equal('types');
+
+    expect(definitions.get('drgElement').find(({ id }) => id === 'input_1').get('variable').typeRef).to.equal('types.Applicant');
+
+    expect(definitions.get('drgElement').find(({ id }) => id === 'decision_1').get('variable').typeRef).to.equal('number');
+  });
+
+
   it('should migrate diagram with prefixed dmn namespace', async function() {
 
     // given
