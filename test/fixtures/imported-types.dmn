@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd" xmlns:types="urn:example:types" xmlns:other="urn:example:other" xmlns:my-types="urn:example:my-types" id="Definitions_1" name="DRD" namespace="http://camunda.org/schema/1.0/dmn">
+  <import namespace="urn:example:types" locationURI="types.dmn" importType="http://www.omg.org/spec/DMN/20151101/dmn.xsd" />
+  <import namespace="urn:example:unbound" locationURI="unbound.dmn" importType="http://www.omg.org/spec/DMN/20151101/dmn.xsd" />
+  <import namespace="urn:example:my-types" locationURI="my-types.dmn" importType="http://www.omg.org/spec/DMN/20151101/dmn.xsd" />
+  <itemDefinition id="ItemDefinition_1" name="Applicants">
+    <typeRef>types:Applicant</typeRef>
+  </itemDefinition>
+  <inputData id="InputData_1" name="Applicant">
+    <variable id="InformationItem_1" name="Applicant" typeRef="types:Applicant" />
+  </inputData>
+  <inputData id="InputData_2" name="Other">
+    <variable id="InformationItem_2" name="Other" typeRef="other:Thing" />
+  </inputData>
+  <decision id="Decision_1" name="Decision">
+    <variable id="InformationItem_3" name="Decision" typeRef="string" />
+    <literalExpression id="LiteralExpression_1" typeRef="types:Result">
+      <text>"ok"</text>
+    </literalExpression>
+  </decision>
+  <inputData id="InputData_3" name="Hyphenated">
+    <variable id="InformationItem_4" name="Hyphenated" typeRef="my-types:Thing" />
+  </inputData>
+</definitions>
