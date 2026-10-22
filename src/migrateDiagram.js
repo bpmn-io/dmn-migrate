@@ -103,6 +103,8 @@ async function migrateFrom11To13(xml) {
 
   addIds(definitions);
 
+  migrateImports(definitions);
+
   addNames(definitions);
 
   migrateDI(definitions, moddle);
@@ -183,6 +185,74 @@ function addNames(element) {
 
     if (isArray(value)) {
       value.forEach(addNames);
+    }
+  });
+}
+
+/**
+ * Name imports after the XML namespace prefix bound to their namespace and
+ * migrate type references to imported types from XML QNames (`prefix:Type`)
+ * to FEEL qualified names (`importName.Type`), as expected since DMN 1.2.
+ *
+ * @param {Object} definitions
+ */
+function migrateImports(definitions) {
+  const namespaceDeclarations = definitions.$attrs || {};
+
+  const importPrefixes = [];
+
+  (definitions.get('import') || []).forEach(importElement => {
+    if (importElement.name) {
+      return;
+    }
+
+    const declaration = Object.keys(namespaceDeclarations).find(attr => {
+      return attr.startsWith('xmlns:') && namespaceDeclarations[ attr ] === importElement.namespace;
+    });
+
+    if (!declaration) {
+      return;
+    }
+
+    const prefix = declaration.slice('xmlns:'.length);
+
+    // `-` and `.` are allowed in a namespace prefix but would make
+    // `prefix.Type` ambiguous in FEEL
+    if (/[.-]/.test(prefix)) {
+      return;
+    }
+
+    importElement.name = prefix;
+
+    importPrefixes.push(prefix);
+  });
+
+  migrateTypeRefs(definitions, importPrefixes);
+}
+
+/**
+ * Migrate `typeRef` of element and all its descendants that reference an
+ * imported type by one of the given namespace prefixes.
+ *
+ * @param {Object} element
+ * @param {string[]} importPrefixes
+ */
+function migrateTypeRefs(element, importPrefixes) {
+  if (isString(element.typeRef)) {
+    const [ prefix, localName ] = element.typeRef.split(/:(.*)/s);
+
+    if (localName && importPrefixes.includes(prefix)) {
+      element.typeRef = `${ prefix }.${ localName }`;
+    }
+  }
+
+  Object.values(element).forEach(value => {
+    if (value.$type) {
+      migrateTypeRefs(value, importPrefixes);
+    }
+
+    if (isArray(value)) {
+      value.forEach(child => migrateTypeRefs(child, importPrefixes));
     }
   });
 }
