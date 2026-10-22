@@ -120,6 +120,112 @@ describe('migrateDiagram', function() {
   });
 
 
+  describe('imports', function() {
+
+    it('should migrate DMN 1.1 diagram with imports', async function() {
+
+      // given
+      let xml = read('test/fixtures/imported-types.dmn');
+
+      // when
+      xml = await migrateDiagram(xml);
+
+      const result = await validate(xml);
+
+      // then
+      expect(result.valid).to.be.true;
+    });
+
+
+    it('should name import after its namespace prefix', async function() {
+
+      // given
+      let xml = read('test/fixtures/imported-types.dmn');
+
+      // when
+      xml = await migrateDiagram(xml);
+
+      const definitions = await parse(xml);
+
+      // then
+      expect(definitions.import[0].name).to.eql('types');
+    });
+
+
+    it('should name import without namespace prefix after its ID', async function() {
+
+      // given
+      let xml = read('test/fixtures/imported-types.dmn');
+
+      // when
+      xml = await migrateDiagram(xml);
+
+      const definitions = await parse(xml);
+
+      // then
+      expect(definitions.import[1].name).to.eql(definitions.import[1].id);
+    });
+
+
+    it('should name import with prefix that is no valid FEEL name after its ID', async function() {
+
+      // given
+      let xml = read('test/fixtures/imported-types.dmn');
+
+      // when
+      xml = await migrateDiagram(xml);
+
+      const definitions = await parse(xml);
+
+      // then
+      const [ , , hyphenated ] = definitions.import;
+      const [ , , , input ] = definitions.drgElement;
+
+      expect(hyphenated.name).to.eql(hyphenated.id);
+      expect(input.variable.typeRef).to.eql('my-types:Thing');
+    });
+
+
+    it('should migrate type references to imported types', async function() {
+
+      // given
+      let xml = read('test/fixtures/imported-types.dmn');
+
+      // when
+      xml = await migrateDiagram(xml);
+
+      const definitions = await parse(xml);
+
+      // then
+      const [ itemDefinition ] = definitions.itemDefinition;
+      const [ applicant, , decision ] = definitions.drgElement;
+
+      expect(itemDefinition.typeRef).to.eql('types.Applicant');
+      expect(applicant.variable.typeRef).to.eql('types.Applicant');
+      expect(decision.decisionLogic.typeRef).to.eql('types.Result');
+    });
+
+
+    it('should NOT migrate other type references', async function() {
+
+      // given
+      let xml = read('test/fixtures/imported-types.dmn');
+
+      // when
+      xml = await migrateDiagram(xml);
+
+      const definitions = await parse(xml);
+
+      // then
+      const [ , other, decision ] = definitions.drgElement;
+
+      expect(other.variable.typeRef).to.eql('other:Thing');
+      expect(decision.variable.typeRef).to.eql('string');
+    });
+
+  });
+
+
   it('should NOT create DMNDI if no DI', async function() {
 
     // given
