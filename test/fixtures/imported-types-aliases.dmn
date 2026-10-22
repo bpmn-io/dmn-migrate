@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd" xmlns:types="urn:example:types" xmlns:t="urn:example:types" id="Definitions_1" name="DRD" namespace="http://camunda.org/schema/1.0/dmn">
+  <import namespace="urn:example:types" locationURI="types.dmn" importType="http://www.omg.org/spec/DMN/20151101/dmn.xsd" />
+  <inputData id="InputData_1" name="Applicant">
+    <variable id="InformationItem_1" name="Applicant" typeRef="types:Applicant" />
+  </inputData>
+  <inputData id="InputData_2" name="Alias">
+    <variable id="InformationItem_2" name="Alias" typeRef="t:Applicant" />
+  </inputData>
+</definitions>

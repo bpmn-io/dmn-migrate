@@ -199,35 +199,33 @@ function addNames(element) {
 function migrateImports(definitions) {
   const namespaceDeclarations = definitions.$attrs || {};
 
-  const importPrefixes = [];
+  // namespace prefix -> import name
+  const importNames = new Map();
 
   (definitions.get('import') || []).forEach(importElement => {
     if (importElement.name) {
       return;
     }
 
-    const declaration = Object.keys(namespaceDeclarations).find(attr => {
+    const prefixes = Object.keys(namespaceDeclarations).filter(attr => {
       return attr.startsWith('xmlns:') && namespaceDeclarations[ attr ] === importElement.namespace;
-    });
-
-    if (!declaration) {
-      return;
-    }
-
-    const prefix = declaration.slice('xmlns:'.length);
+    }).map(attr => attr.slice('xmlns:'.length));
 
     // `-` and `.` are allowed in a namespace prefix but would make
     // `prefix.Type` ambiguous in FEEL
-    if (/[.-]/.test(prefix)) {
+    const name = prefixes.find(prefix => !/[.-]/.test(prefix));
+
+    if (!name) {
       return;
     }
 
-    importElement.name = prefix;
+    importElement.name = name;
 
-    importPrefixes.push(prefix);
+    // the namespace may be bound to more than one prefix
+    prefixes.forEach(prefix => importNames.set(prefix, name));
   });
 
-  migrateTypeRefs(definitions, importPrefixes);
+  migrateTypeRefs(definitions, importNames);
 }
 
 /**
@@ -235,24 +233,24 @@ function migrateImports(definitions) {
  * imported type by one of the given namespace prefixes.
  *
  * @param {Object} element
- * @param {string[]} importPrefixes
+ * @param {Map<string, string>} importNames import name by namespace prefix
  */
-function migrateTypeRefs(element, importPrefixes) {
+function migrateTypeRefs(element, importNames) {
   if (isString(element.typeRef)) {
     const [ prefix, localName ] = element.typeRef.split(/:(.*)/s);
 
-    if (localName && importPrefixes.includes(prefix)) {
-      element.typeRef = `${ prefix }.${ localName }`;
+    if (localName && importNames.has(prefix)) {
+      element.typeRef = `${ importNames.get(prefix) }.${ localName }`;
     }
   }
 
   Object.values(element).forEach(value => {
     if (value.$type) {
-      migrateTypeRefs(value, importPrefixes);
+      migrateTypeRefs(value, importNames);
     }
 
     if (isArray(value)) {
-      value.forEach(child => migrateTypeRefs(child, importPrefixes));
+      value.forEach(child => migrateTypeRefs(child, importNames));
     }
   });
 }

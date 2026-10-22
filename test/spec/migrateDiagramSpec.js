@@ -186,6 +186,25 @@ describe('migrateDiagram', function() {
     });
 
 
+    it('should migrate type references using any prefix of the imported namespace', async function() {
+
+      // given
+      let xml = read('test/fixtures/imported-types-aliases.dmn');
+
+      // when
+      xml = await migrateDiagram(xml);
+
+      const definitions = await parse(xml);
+
+      // then
+      const [ applicant, alias ] = definitions.drgElement;
+
+      expect(definitions.import[0].name).to.eql('types');
+      expect(applicant.variable.typeRef).to.eql('types.Applicant');
+      expect(alias.variable.typeRef).to.eql('types.Applicant');
+    });
+
+
     it('should migrate type references to imported types', async function() {
 
       // given
