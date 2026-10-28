@@ -148,7 +148,7 @@ describe('migrateDiagram', function() {
       const definitions = await parse(xml);
 
       // then
-      expect(definitions.import[0].name).to.eql('types');
+      expect(findImport(definitions, 'urn:example:types').name).to.eql('types');
     });
 
 
@@ -163,7 +163,9 @@ describe('migrateDiagram', function() {
       const definitions = await parse(xml);
 
       // then
-      expect(definitions.import[1].name).to.eql(definitions.import[1].id);
+      const unbound = findImport(definitions, 'urn:example:unbound');
+
+      expect(unbound.name).to.eql(unbound.id);
     });
 
 
@@ -178,8 +180,8 @@ describe('migrateDiagram', function() {
       const definitions = await parse(xml);
 
       // then
-      const [ , , hyphenated ] = definitions.import;
-      const [ , , , input ] = definitions.drgElement;
+      const hyphenated = findImport(definitions, 'urn:example:my-types');
+      const input = findById(definitions.drgElement, 'InputData_3');
 
       expect(hyphenated.name).to.eql(hyphenated.id);
       expect(input.variable.typeRef).to.eql('my-types:Thing');
@@ -197,7 +199,8 @@ describe('migrateDiagram', function() {
       const definitions = await parse(xml);
 
       // then
-      const [ applicant, alias ] = definitions.drgElement;
+      const applicant = findById(definitions.drgElement, 'InputData_1');
+      const alias = findById(definitions.drgElement, 'InputData_2');
 
       expect(definitions.import[0].name).to.eql('types');
       expect(applicant.variable.typeRef).to.eql('types.Applicant');
@@ -217,7 +220,8 @@ describe('migrateDiagram', function() {
 
       // then
       const [ itemDefinition ] = definitions.itemDefinition;
-      const [ applicant, , decision ] = definitions.drgElement;
+      const applicant = findById(definitions.drgElement, 'InputData_1');
+      const decision = findById(definitions.drgElement, 'Decision_1');
 
       expect(itemDefinition.typeRef).to.eql('types.Applicant');
       expect(applicant.variable.typeRef).to.eql('types.Applicant');
@@ -236,7 +240,8 @@ describe('migrateDiagram', function() {
       const definitions = await parse(xml);
 
       // then
-      const [ , other, decision ] = definitions.drgElement;
+      const other = findById(definitions.drgElement, 'InputData_2');
+      const decision = findById(definitions.drgElement, 'Decision_1');
 
       expect(other.variable.typeRef).to.eql('other:Thing');
       expect(decision.variable.typeRef).to.eql('string');
@@ -354,6 +359,14 @@ describe('migrateDiagram', function() {
 
 
 // helpers //////////
+
+function findById(elements, id) {
+  return elements.find(element => element.id === id);
+}
+
+function findImport(definitions, namespace) {
+  return definitions.import.find(element => element.namespace === namespace);
+}
 
 async function validate(xml) {
   return validateXML(xml, xsd);
