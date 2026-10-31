@@ -63,6 +63,116 @@ describe('migrateDiagram', function() {
       expect(xml).to.eql(migratedXml);
     });
 
+
+    it('should migrate DMN 1.4 diagram', async function() {
+
+      // given
+      let xml = read('test/fixtures/diagram-1-4.dmn');
+
+      // when
+      xml = await migrateDiagram(xml);
+
+      const result = await validate(xml);
+
+      // then
+      expect(result.valid).to.be.true;
+    });
+
+
+    it('should migrate DMN 1.5 diagram', async function() {
+
+      // given
+      let xml = read('test/fixtures/diagram-1-5.dmn');
+
+      // when
+      xml = await migrateDiagram(xml);
+
+      const result = await validate(xml);
+
+      // then
+      expect(result.valid).to.be.true;
+    });
+
+
+    it('should migrate DMN 1.6 diagram', async function() {
+
+      // given
+      let xml = read('test/fixtures/diagram-1-6.dmn');
+
+      // when
+      xml = await migrateDiagram(xml);
+
+      const result = await validate(xml);
+
+      // then
+      expect(result.valid).to.be.true;
+    });
+
+
+    it('should migrate DMN 1.7 diagram', async function() {
+
+      // given
+      let xml = read('test/fixtures/diagram-1-7.dmn');
+
+      // when
+      xml = await migrateDiagram(xml);
+
+      const result = await validate(xml);
+
+      // then
+      expect(result.valid).to.be.true;
+    });
+
+  });
+
+
+  describe('DMN 1.7 support', function() {
+
+    it('should migrate permanent namespaces', async function() {
+
+      // given
+      let xml = read('test/fixtures/diagram-1-7.dmn');
+
+      // when
+      xml = await migrateDiagram(xml);
+
+      // then
+      expect(xml).to.include('xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"');
+      expect(xml).to.include('xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"');
+      expect(xml).to.include('xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/"');
+      expect(xml).to.include('xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/"');
+      expect(xml).to.include('expressionLanguage="https://www.omg.org/spec/DMN/20191111/FEEL/"');
+      expect(xml).not.to.include('"https://www.omg.org/spec/DMN/"');
+    });
+
+
+    it('should remove dmnVersion', async function() {
+
+      // given
+      let xml = read('test/fixtures/diagram-1-7.dmn');
+
+      // when
+      xml = await migrateDiagram(xml);
+
+      // then
+      expect(xml).not.to.include('dmnVersion');
+    });
+
+
+    it('should keep diagram interchange', async function() {
+
+      // given
+      let xml = read('test/fixtures/diagram-1-7.dmn');
+
+      // when
+      xml = await migrateDiagram(xml);
+
+      const definitions = await parse(xml);
+
+      // then
+      expect(definitions.dmnDI.diagrams[0].diagramElements).to.have.lengthOf(9);
+    });
+
   });
 
 

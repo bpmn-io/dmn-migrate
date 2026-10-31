@@ -21,8 +21,55 @@ const DMN11URI = '"http://www.omg.org/spec/DMN/20151101/dmn.xsd"';
 const DMN12URI = '"http://www.omg.org/spec/DMN/20180521/MODEL/"';
 const DMN13URI = '"https://www.omg.org/spec/DMN/20191111/MODEL/"';
 
+const DMN13_NAMESPACES = {
+  dmn: 'https://www.omg.org/spec/DMN/20191111/MODEL/',
+  dmndi: 'https://www.omg.org/spec/DMN/20191111/DMNDI/',
+  di: 'http://www.omg.org/spec/DMN/20180521/DI/',
+  dc: 'http://www.omg.org/spec/DMN/20180521/DC/',
+  feel: 'https://www.omg.org/spec/DMN/20191111/FEEL/'
+};
+
 /**
- * Migrate DMN 1.1 XML to 1.3.
+ * Namespaces of DMN versions newer than DMN 1.3, ordered from newest to oldest.
+ *
+ * Their diagram interchange is compatible with DMN 1.3; they differ in the namespace URIs
+ * and in model elements unknown to DMN 1.3.
+ *
+ * DMN 1.7 introduced permanent namespace URIs that no longer change with each DMN version.
+ */
+const NEWER_DMN_NAMESPACES = [
+  {
+    version: '1.7',
+    dmn: 'https://www.omg.org/spec/DMN/',
+    dmndi: 'https://www.omg.org/spec/DMN/DMNDI/',
+    di: 'https://www.omg.org/spec/SCE/DI/',
+    dc: 'https://www.omg.org/spec/SCE/DC/',
+    feel: 'https://www.omg.org/spec/DMN/FEEL/'
+  },
+  {
+    version: '1.6',
+    dmn: 'https://www.omg.org/spec/DMN/20240513/MODEL/',
+    dmndi: 'https://www.omg.org/spec/DMN/20230324/DMNDI/',
+    feel: 'https://www.omg.org/spec/DMN/20240513/FEEL/'
+  },
+  {
+    version: '1.5',
+    dmn: 'https://www.omg.org/spec/DMN/20230324/MODEL/',
+    dmndi: 'https://www.omg.org/spec/DMN/20230324/DMNDI/',
+    feel: 'https://www.omg.org/spec/DMN/20230324/FEEL/'
+  },
+  {
+    version: '1.4',
+    dmn: 'https://www.omg.org/spec/DMN/20211108/MODEL/',
+    feel: 'https://www.omg.org/spec/DMN/20211108/FEEL/'
+  }
+];
+
+/**
+ * Migrate DMN 1.1, 1.2, 1.4, 1.5, 1.6 and 1.7 XML to 1.3.
+ *
+ * For DMN 1.4 and newer, only the namespaces are migrated. Model elements unknown
+ * to DMN 1.3 remain in the migrated XML and are reported as unparsable on import.
  *
  * @param {string} xml
  *
@@ -41,6 +88,14 @@ export async function migrateDiagram(xml) {
     return migrateFrom12To13(xml);
   } else if (hasNamespace(DMN13URI, xml)) {
     return xml;
+  }
+
+  const newerNamespaces = NEWER_DMN_NAMESPACES.find(
+    namespaces => hasNamespace(`"${ namespaces.dmn }"`, xml)
+  );
+
+  if (newerNamespaces) {
+    return migrateFromNewerTo13(xml, newerNamespaces);
   }
 
   // return XML without migrating
@@ -70,6 +125,29 @@ async function migrateFrom12To13(xml) {
   return xml
     .replace(DMN12URI, DMN13URI)
     .replace('"http://www.omg.org/spec/DMN/20180521/DMNDI/"', '"https://www.omg.org/spec/DMN/20191111/DMNDI/"');
+}
+
+/**
+ * Migrate XML of a DMN version newer than DMN 1.3 to 1.3.
+ *
+ * @param {string} xml
+ * @param {Object} namespaces
+ *
+ * @returns {Promise<string>}
+ */
+async function migrateFromNewerTo13(xml, namespaces) {
+  const migratedXML = [ 'dmn', 'dmndi', 'di', 'dc', 'feel' ].reduce((migratedXML, key) => {
+    const namespace = namespaces[ key ];
+
+    if (!namespace) {
+      return migratedXML;
+    }
+
+    return migratedXML.replaceAll(`"${ namespace }"`, `"${ DMN13_NAMESPACES[ key ] }"`);
+  }, xml);
+
+  // DMN 1.3 does not know the `dmnVersion` attribute introduced with DMN 1.7
+  return migratedXML.replace(/(<([\w.-]+:)?definitions\b[^>]*?)\s+dmnVersion="[^"]*"/, '$1');
 }
 
 /**

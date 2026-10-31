@@ -6,6 +6,8 @@ All notable changes to [dmn-migrate](https://github.com/bpmn-io/dmn-migrate) are
 
 ___Note:__ Yet to be released changes appear here._
 
+* `FEAT`: migrate DMN 1.4, 1.5, 1.6, and 1.7 diagrams to DMN 1.3
+
 ## 0.7.1
 
 * `DEPS`: update to `ids@3.0.1`
