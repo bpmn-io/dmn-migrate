@@ -229,6 +229,25 @@ describe('migrateDiagram', function() {
     });
 
 
+    it('should NOT fail on type references that cannot be migrated', async function() {
+
+      // given
+      let xml = read('test/fixtures/imported-types-unresolvable.dmn');
+
+      // when
+      xml = await migrateDiagram(xml);
+
+      const definitions = await parse(xml);
+
+      // then
+      const unbound = findById(definitions.drgElement, 'InputData_1');
+      const undeclared = findById(definitions.drgElement, 'InputData_2');
+
+      expect(unbound.variable.typeRef).to.eql('unbound:Thing');
+      expect(undeclared.variable.typeRef).to.eql('undeclared:Thing');
+    });
+
+
     it('should NOT migrate other type references', async function() {
 
       // given
