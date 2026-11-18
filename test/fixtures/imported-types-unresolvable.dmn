@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd" id="Definitions_1" name="DRD" namespace="http://camunda.org/schema/1.0/dmn">
+  <import namespace="urn:example:unbound" locationURI="unbound.dmn" importType="http://www.omg.org/spec/DMN/20151101/dmn.xsd" />
+  <inputData id="InputData_1" name="Unbound">
+    <variable id="InformationItem_1" name="Unbound" typeRef="unbound:Thing" />
+  </inputData>
+  <inputData id="InputData_2" name="Undeclared">
+    <variable id="InformationItem_2" name="Undeclared" typeRef="undeclared:Thing" />
+  </inputData>
+</definitions>

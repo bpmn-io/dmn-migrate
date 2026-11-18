@@ -6,6 +6,8 @@ All notable changes to [dmn-migrate](https://github.com/bpmn-io/dmn-migrate) are
 
 ___Note:__ Yet to be released changes appear here._
 
+* `FEAT`: migrate type references to imported types ([#60](https://github.com/bpmn-io/dmn-migrate/issues/60))
+
 ## 0.7.1
 
 * `DEPS`: update to `ids@3.0.1`
